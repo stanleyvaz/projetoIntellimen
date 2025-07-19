@@ -1,0 +1,80 @@
+# ==========================================
+# INTELLIMEN - GITIGNORE
+# ==========================================
+
+# Dependências do Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de ambiente (contêm senhas/chaves)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Banco de dados SQLite (comentar se quiser versionar)
+intellimen.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Arquivos temporários
+.tmp/
+temp/
+tmp/
+
+# Arquivos do sistema operacional
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos de build/dist
+dist/
+build/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Arquivos de teste
+test-results/
+
+# PM2
+.pm2/
+
+# Arquivos específicos do IntelliMen
+uploads/
+backups/
+*.md.backup
+
+# Certificados SSL (se houver)
+*.pem
+*.key
+*.crt

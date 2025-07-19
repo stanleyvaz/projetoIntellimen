@@ -1,4 +1,4 @@
-// server.js - IntelliMen Backend Completo
+// server.js - IntelliMen Backend Completo com Perfil de Usuário
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
@@ -21,9 +21,9 @@ app.use(express.static('public'));
 // Configuração do banco de dados SQLite
 const db = new sqlite3.Database('./intellimen.db');
 
-// Criar tabelas se não existirem
+// Criar tabelas se não existirem (schema atualizado)
 db.serialize(() => {
-    // Tabela de usuários
+    // Tabela de usuários expandida
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -34,10 +34,52 @@ db.serialize(() => {
         reset_token TEXT,
         reset_token_expires DATETIME,
         last_login DATETIME,
-        avatar_url TEXT
+        avatar_url TEXT,
+        
+        -- Dados pessoais
+        full_name TEXT,
+        birth_date DATE,
+        phone TEXT,
+        address TEXT,
+        city TEXT,
+        state TEXT,
+        country TEXT DEFAULT 'Brasil',
+        postal_code TEXT,
+        marital_status TEXT CHECK(marital_status IN ('solteiro', 'namorado', 'noivo', 'casado', 'divorciado', 'viuvo')),
+        spouse_name TEXT,
+        children_count INTEGER DEFAULT 0,
+        profession TEXT,
+        education_level TEXT CHECK(education_level IN ('fundamental', 'medio', 'superior', 'pos-graduacao', 'mestrado', 'doutorado')),
+        about_me TEXT,
+        
+        -- Dados religiosos
+        denomination TEXT,
+        church_name TEXT,
+        church_address TEXT,
+        pastor_name TEXT,
+        baptized BOOLEAN DEFAULT FALSE,
+        baptism_date DATE,
+        confirmation_date DATE,
+        church_role TEXT,
+        ministry TEXT,
+        bible_version TEXT DEFAULT 'NVI',
+        favorite_verse TEXT,
+        spiritual_gifts TEXT,
+        conversion_date DATE,
+        conversion_story TEXT,
+        prayer_requests TEXT,
+        testimony TEXT,
+        
+        -- Configurações do perfil
+        profile_visibility TEXT DEFAULT 'public' CHECK(profile_visibility IN ('public', 'partners_only', 'private')),
+        allow_contact BOOLEAN DEFAULT TRUE,
+        share_progress BOOLEAN DEFAULT TRUE,
+        receive_notifications BOOLEAN DEFAULT TRUE,
+        
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
 
-    // Tabela de progresso dos desafios
+    // Tabela de progresso dos desafios (mantida)
     db.run(`CREATE TABLE IF NOT EXISTS user_progress (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -51,7 +93,17 @@ db.serialize(() => {
         UNIQUE(user_id, challenge_id)
     )`);
 
-    // Tabela de estatísticas do sistema
+    // Tabela para fotos do perfil
+    db.run(`CREATE TABLE IF NOT EXISTS profile_photos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        photo_url TEXT NOT NULL,
+        is_primary BOOLEAN DEFAULT FALSE,
+        uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    )`);
+
+    // Tabela de estatísticas do sistema (mantida)
     db.run(`CREATE TABLE IF NOT EXISTS system_stats (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         total_users INTEGER DEFAULT 0,
@@ -59,7 +111,7 @@ db.serialize(() => {
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
 
-    // Tabela de logs de atividades
+    // Tabela de logs de atividades (mantida)
     db.run(`CREATE TABLE IF NOT EXISTS activity_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -71,7 +123,7 @@ db.serialize(() => {
         FOREIGN KEY (user_id) REFERENCES users (id)
     )`);
 
-    // Inserir dados iniciais se não existirem
+    // Verificar e criar usuário de demonstração se não existir
     db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
         if (err) {
             console.error('Erro ao verificar usuários:', err);
@@ -81,17 +133,16 @@ db.serialize(() => {
         if (row.count === 0) {
             console.log('📚 Criando usuário de demonstração...');
             
-            // Hash da senha padrão
             bcrypt.hash('123456', 10, (err, hashedPassword) => {
                 if (err) {
                     console.error('Erro ao criar hash da senha:', err);
                     return;
                 }
                 
-                // Inserir usuário de demonstração
                 db.run(
-                    `INSERT INTO users (name, email, password, partner) VALUES (?, ?, ?, ?)`,
-                    ['João Silva', 'joao@email.com', hashedPassword, 'Pedro Santos'],
+                    `INSERT INTO users (name, email, password, partner, full_name, denomination, church_name) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    ['João Silva', 'joao@email.com', hashedPassword, 'Pedro Santos', 'João Silva dos Santos', 'Batista', 'Igreja Batista Central'],
                     function(err) {
                         if (err) {
                             console.error('Erro ao criar usuário de demonstração:', err);
@@ -123,29 +174,8 @@ db.serialize(() => {
     });
 });
 
-// Configuração do email (Gmail)
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER || 'seu-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'sua-senha-app'
-    }
-});
-
-// Função para registrar atividades
-function logActivity(userId, action, details, req) {
-    const ip = req.ip || req.connection.remoteAddress;
-    const userAgent = req.get('User-Agent') || 'Unknown';
-    
-    db.run(
-        `INSERT INTO activity_logs (user_id, action, details, ip_address, user_agent) 
-         VALUES (?, ?, ?, ?, ?)`,
-        [userId, action, details, ip, userAgent]
-    );
-}
-
-// Middleware para verificar JWT
-const authenticateToken = (req, res, next) => {
+// Middleware de autenticação
+function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -160,21 +190,32 @@ const authenticateToken = (req, res, next) => {
         req.user = user;
         next();
     });
-};
+}
 
-// ROTAS DE AUTENTICAÇÃO
+// Função para registrar atividades
+function logActivity(userId, action, details, req) {
+    const ip = req.ip || req.connection.remoteAddress;
+    const userAgent = req.get('User-Agent');
+    
+    db.run(
+        'INSERT INTO activity_logs (user_id, action, details, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)',
+        [userId, action, details, ip, userAgent]
+    );
+}
 
-// Registro de usuário
+// ===== ROTAS DE AUTENTICAÇÃO (mantidas) =====
+
+// Registro
 app.post('/api/register', async (req, res) => {
-    const { name, email, password, partner } = req.body;
-
-    if (!name || !email || !password) {
-        return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
-    }
-
     try {
+        const { name, email, password, partner } = req.body;
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
+        }
+
         // Verificar se email já existe
-        db.get('SELECT email FROM users WHERE email = ?', [email], async (err, row) => {
+        db.get('SELECT id FROM users WHERE email = ?', [email], async (err, row) => {
             if (err) {
                 console.error('Erro na verificação de email:', err);
                 return res.status(500).json({ error: 'Erro interno do servidor' });
@@ -189,8 +230,8 @@ app.post('/api/register', async (req, res) => {
 
             // Inserir novo usuário
             db.run(
-                'INSERT INTO users (name, email, password, partner) VALUES (?, ?, ?, ?)',
-                [name, email, hashedPassword, partner || 'Não definido'],
+                'INSERT INTO users (name, email, password, partner, full_name) VALUES (?, ?, ?, ?, ?)',
+                [name, email, hashedPassword, partner || 'Não definido', name],
                 function(err) {
                     if (err) {
                         console.error('Erro ao criar usuário:', err);
@@ -204,7 +245,6 @@ app.post('/api/register', async (req, res) => {
                         { expiresIn: '24h' }
                     );
 
-                    // Registrar atividade
                     logActivity(this.lastID, 'USER_REGISTERED', `Novo usuário: ${name}`, req);
 
                     res.status(201).json({
@@ -255,7 +295,6 @@ app.post('/api/login', (req, res) => {
                 { expiresIn: '24h' }
             );
 
-            // Registrar atividade
             logActivity(user.id, 'USER_LOGIN', 'Login realizado', req);
 
             res.json({
@@ -269,218 +308,510 @@ app.post('/api/login', (req, res) => {
                 }
             });
         } catch (error) {
-            console.error('Erro no login:', error);
+            console.error('Erro na verificação de senha:', error);
             res.status(500).json({ error: 'Erro interno do servidor' });
         }
     });
 });
 
-// Esqueceu a senha
-app.post('/api/forgot-password', (req, res) => {
-    const { email } = req.body;
+// ===== ROTAS DE PERFIL DE USUÁRIO =====
 
-    if (!email) {
-        return res.status(400).json({ error: 'Email é obrigatório' });
-    }
-
-    db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+// Obter perfil completo do usuário
+app.get('/api/profile', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    
+    db.get(`
+        SELECT 
+            id, name, email, partner, created_at, last_login, avatar_url,
+            full_name, birth_date, phone, address, city, state, country, postal_code,
+            marital_status, spouse_name, children_count, profession, education_level, about_me,
+            denomination, church_name, church_address, pastor_name, baptized, baptism_date,
+            confirmation_date, church_role, ministry, bible_version, favorite_verse,
+            spiritual_gifts, conversion_date, conversion_story, prayer_requests, testimony,
+            profile_visibility, allow_contact, share_progress, receive_notifications
+        FROM users 
+        WHERE id = ?
+    `, [userId], (err, user) => {
         if (err) {
-            console.error('Erro na consulta de usuário:', err);
-            return res.status(500).json({ error: 'Erro interno do servidor' });
-        }
-
-        if (!user) {
-            return res.status(404).json({ error: 'Email não encontrado' });
-        }
-
-        // Gerar token de recuperação
-        const resetToken = crypto.randomBytes(32).toString('hex');
-        const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hora
-
-        // Salvar token no banco
-        db.run(
-            'UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?',
-            [resetToken, resetTokenExpires, email],
-            (err) => {
-                if (err) {
-                    console.error('Erro ao salvar token:', err);
-                    return res.status(500).json({ error: 'Erro ao gerar token de recuperação' });
-                }
-
-                // Enviar email (se configurado)
-                if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-                    const resetUrl = `${req.protocol}://${req.get('host')}/reset-password?token=${resetToken}`;
-                    
-                    const mailOptions = {
-                        from: process.env.EMAIL_USER,
-                        to: email,
-                        subject: 'IntelliMen - Recuperação de Senha',
-                        html: `
-                            <h2>Recuperação de Senha - IntelliMen</h2>
-                            <p>Olá, ${user.name}!</p>
-                            <p>Você solicitou a recuperação de sua senha. Clique no link abaixo para criar uma nova senha:</p>
-                            <a href="${resetUrl}" style="background: #000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
-                            <p>Este link expira em 1 hora.</p>
-                            <p>Se você não solicitou esta recuperação, ignore este email.</p>
-                            <hr>
-                            <p><strong>IntelliMen</strong> - 53 Desafios Para Homens Inteligentes</p>
-                        `
-                    };
-
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.error('Erro ao enviar email:', error);
-                            return res.status(500).json({ error: 'Erro ao enviar email de recuperação' });
-                        }
-                        
-                        logActivity(user.id, 'PASSWORD_RESET_REQUESTED', 'Token de recuperação enviado', req);
-                        res.json({ message: 'Email de recuperação enviado com sucesso' });
-                    });
-                } else {
-                    // Para demonstração, retornar o token diretamente
-                    res.json({ 
-                        message: 'Token de recuperação gerado (DEMO MODE)', 
-                        resetToken: resetToken 
-                    });
-                }
-            }
-        );
-    });
-});
-
-// Redefinir senha
-app.post('/api/reset-password', async (req, res) => {
-    const { token, newPassword } = req.body;
-
-    if (!token || !newPassword) {
-        return res.status(400).json({ error: 'Token e nova senha são obrigatórios' });
-    }
-
-    db.get(
-        'SELECT * FROM users WHERE reset_token = ? AND reset_token_expires > ?',
-        [token, new Date()],
-        async (err, user) => {
-            if (err) {
-                console.error('Erro na consulta de token:', err);
-                return res.status(500).json({ error: 'Erro interno do servidor' });
-            }
-
-            if (!user) {
-                return res.status(400).json({ error: 'Token inválido ou expirado' });
-            }
-
-            try {
-                // Hash da nova senha
-                const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-                // Atualizar senha e remover token
-                db.run(
-                    'UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?',
-                    [hashedPassword, user.id],
-                    (err) => {
-                        if (err) {
-                            console.error('Erro ao atualizar senha:', err);
-                            return res.status(500).json({ error: 'Erro ao atualizar senha' });
-                        }
-
-                        logActivity(user.id, 'PASSWORD_RESET_COMPLETED', 'Senha redefinida', req);
-                        res.json({ message: 'Senha redefinida com sucesso' });
-                    }
-                );
-            } catch (error) {
-                console.error('Erro ao processar nova senha:', error);
-                res.status(500).json({ error: 'Erro interno do servidor' });
-            }
-        }
-    );
-});
-
-// ROTAS DE PROGRESSO DOS DESAFIOS
-
-// Obter progresso do usuário
-app.get('/api/progress', authenticateToken, (req, res) => {
-    db.all(
-        'SELECT * FROM user_progress WHERE user_id = ?',
-        [req.user.id],
-        (err, rows) => {
-            if (err) {
-                console.error('Erro ao buscar progresso:', err);
-                return res.status(500).json({ error: 'Erro ao buscar progresso' });
-            }
-
-            // Transformar em objeto indexado por challenge_id
-            const progress = {};
-            rows.forEach(row => {
-                progress[row.challenge_id] = {
-                    completed: Boolean(row.completed),
-                    completedAt: row.completed_at,
-                    notes: row.notes
-                };
-            });
-
-            res.json(progress);
-        }
-    );
-});
-
-// Atualizar progresso de um desafio
-app.post('/api/progress/:challengeId', authenticateToken, (req, res) => {
-    const { challengeId } = req.params;
-    const { completed, notes } = req.body;
-
-    const now = new Date().toISOString();
-
-    db.run(
-        `INSERT OR REPLACE INTO user_progress 
-         (user_id, challenge_id, completed, completed_at, notes, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [req.user.id, challengeId, completed ? 1 : 0, completed ? now : null, notes || '', now],
-        function(err) {
-            if (err) {
-                console.error('Erro ao salvar progresso:', err);
-                return res.status(500).json({ error: 'Erro ao salvar progresso' });
-            }
-
-            // Registrar atividade
-            logActivity(
-                req.user.id, 
-                'CHALLENGE_UPDATED', 
-                `Desafio #${challengeId} - ${completed ? 'Concluído' : 'Atualizado'}`,
-                req
-            );
-
-            res.json({
-                message: 'Progresso salvo com sucesso',
-                progress: {
-                    completed: Boolean(completed),
-                    completedAt: completed ? now : null,
-                    notes: notes || ''
-                }
-            });
-        }
-    );
-});
-
-// Obter dados do usuário
-app.get('/api/user', authenticateToken, (req, res) => {
-    db.get('SELECT id, name, email, partner, created_at FROM users WHERE id = ?', [req.user.id], (err, user) => {
-        if (err) {
-            console.error('Erro ao buscar usuário:', err);
-            return res.status(500).json({ error: 'Erro ao buscar dados do usuário' });
+            console.error('Erro ao buscar perfil:', err);
+            return res.status(500).json({ error: 'Erro ao buscar perfil' });
         }
 
         if (!user) {
             return res.status(404).json({ error: 'Usuário não encontrado' });
         }
 
-        res.json(user);
+        // Buscar fotos do perfil
+        db.all(`
+            SELECT id, photo_url, is_primary, uploaded_at 
+            FROM profile_photos 
+            WHERE user_id = ? 
+            ORDER BY is_primary DESC, uploaded_at DESC
+        `, [userId], (err, photos) => {
+            if (err) {
+                console.error('Erro ao buscar fotos:', err);
+                photos = [];
+            }
+
+            res.json({
+                ...user,
+                photos: photos || []
+            });
+        });
     });
 });
 
-// Atualizar dados do usuário
+// Atualizar dados pessoais
+app.put('/api/profile/personal', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    const {
+        full_name, birth_date, phone, address, city, state, country, postal_code,
+        marital_status, spouse_name, children_count, profession, education_level, about_me
+    } = req.body;
+
+    // Validação básica
+    if (marital_status && !['solteiro', 'namorado', 'noivo', 'casado', 'divorciado', 'viuvo'].includes(marital_status)) {
+        return res.status(400).json({ error: 'Status marital inválido' });
+    }
+
+    if (education_level && !['fundamental', 'medio', 'superior', 'pos-graduacao', 'mestrado', 'doutorado'].includes(education_level)) {
+        return res.status(400).json({ error: 'Nível de educação inválido' });
+    }
+
+    if (children_count && (children_count < 0 || children_count > 20)) {
+        return res.status(400).json({ error: 'Número de filhos inválido' });
+    }
+
+    const query = `
+        UPDATE users SET 
+            full_name = ?,
+            birth_date = ?,
+            phone = ?,
+            address = ?,
+            city = ?,
+            state = ?,
+            country = ?,
+            postal_code = ?,
+            marital_status = ?,
+            spouse_name = ?,
+            children_count = ?,
+            profession = ?,
+            education_level = ?,
+            about_me = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+
+    const params = [
+        full_name || null,
+        birth_date || null,
+        phone || null,
+        address || null,
+        city || null,
+        state || null,
+        country || 'Brasil',
+        postal_code || null,
+        marital_status || null,
+        spouse_name || null,
+        parseInt(children_count) || 0,
+        profession || null,
+        education_level || null,
+        about_me || null,
+        userId
+    ];
+
+    db.run(query, params, function(err) {
+        if (err) {
+            console.error('Erro ao atualizar dados pessoais:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar dados pessoais' });
+        }
+
+        logActivity(userId, 'PROFILE_PERSONAL_UPDATED', 'Dados pessoais atualizados', req);
+        res.json({ message: 'Dados pessoais atualizados com sucesso' });
+    });
+});
+
+// Atualizar dados religiosos
+app.put('/api/profile/religious', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    const {
+        denomination, church_name, church_address, pastor_name, baptized, baptism_date,
+        confirmation_date, church_role, ministry, bible_version, favorite_verse,
+        spiritual_gifts, conversion_date, conversion_story, prayer_requests, testimony
+    } = req.body;
+
+    const query = `
+        UPDATE users SET 
+            denomination = ?,
+            church_name = ?,
+            church_address = ?,
+            pastor_name = ?,
+            baptized = ?,
+            baptism_date = ?,
+            confirmation_date = ?,
+            church_role = ?,
+            ministry = ?,
+            bible_version = ?,
+            favorite_verse = ?,
+            spiritual_gifts = ?,
+            conversion_date = ?,
+            conversion_story = ?,
+            prayer_requests = ?,
+            testimony = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+
+    const params = [
+        denomination || null,
+        church_name || null,
+        church_address || null,
+        pastor_name || null,
+        baptized === true || baptized === 'true' ? 1 : 0,
+        baptism_date || null,
+        confirmation_date || null,
+        church_role || null,
+        ministry || null,
+        bible_version || 'NVI',
+        favorite_verse || null,
+        spiritual_gifts || null,
+        conversion_date || null,
+        conversion_story || null,
+        prayer_requests || null,
+        testimony || null,
+        userId
+    ];
+
+    db.run(query, params, function(err) {
+        if (err) {
+            console.error('Erro ao atualizar dados religiosos:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar dados religiosos' });
+        }
+
+        logActivity(userId, 'PROFILE_RELIGIOUS_UPDATED', 'Dados religiosos atualizados', req);
+        res.json({ message: 'Dados religiosos atualizados com sucesso' });
+    });
+});
+
+// Atualizar configurações de privacidade
+app.put('/api/profile/privacy', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    const {
+        profile_visibility, allow_contact, share_progress, receive_notifications
+    } = req.body;
+
+    if (profile_visibility && !['public', 'partners_only', 'private'].includes(profile_visibility)) {
+        return res.status(400).json({ error: 'Visibilidade do perfil inválida' });
+    }
+
+    const query = `
+        UPDATE users SET 
+            profile_visibility = ?,
+            allow_contact = ?,
+            share_progress = ?,
+            receive_notifications = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+
+    const params = [
+        profile_visibility || 'public',
+        allow_contact === true || allow_contact === 'true' ? 1 : 0,
+        share_progress === true || share_progress === 'true' ? 1 : 0,
+        receive_notifications === true || receive_notifications === 'true' ? 1 : 0,
+        userId
+    ];
+
+    db.run(query, params, function(err) {
+        if (err) {
+            console.error('Erro ao atualizar configurações:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar configurações' });
+        }
+
+        logActivity(userId, 'PROFILE_PRIVACY_UPDATED', 'Configurações de privacidade atualizadas', req);
+        res.json({ message: 'Configurações atualizadas com sucesso' });
+    });
+});
+
+// Upload de foto do perfil
+app.post('/api/profile/photo', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    const { photo_url, is_primary } = req.body;
+
+    if (!photo_url) {
+        return res.status(400).json({ error: 'URL da foto é obrigatória' });
+    }
+
+    // Validar URL básica
+    try {
+        new URL(photo_url);
+    } catch (e) {
+        return res.status(400).json({ error: 'URL da foto inválida' });
+    }
+
+    // Se é foto principal, remover outras fotos principais
+    if (is_primary) {
+        db.run('UPDATE profile_photos SET is_primary = 0 WHERE user_id = ?', [userId]);
+    }
+
+    db.run(`
+        INSERT INTO profile_photos (user_id, photo_url, is_primary) 
+        VALUES (?, ?, ?)
+    `, [userId, photo_url, is_primary ? 1 : 0], function(err) {
+        if (err) {
+            console.error('Erro ao salvar foto:', err);
+            return res.status(500).json({ error: 'Erro ao salvar foto' });
+        }
+
+        // Atualizar avatar_url na tabela users se for foto principal
+        if (is_primary) {
+            db.run('UPDATE users SET avatar_url = ? WHERE id = ?', [photo_url, userId]);
+        }
+
+        logActivity(userId, 'PROFILE_PHOTO_UPLOADED', 'Nova foto de perfil adicionada', req);
+        res.json({ 
+            message: 'Foto adicionada com sucesso',
+            photo_id: this.lastID
+        });
+    });
+});
+
+// Remover foto do perfil
+app.delete('/api/profile/photo/:photoId', authenticateToken, (req, res) => {
+    const userId = req.user.id;
+    const photoId = req.params.photoId;
+
+    db.get('SELECT * FROM profile_photos WHERE id = ? AND user_id = ?', [photoId, userId], (err, photo) => {
+        if (err) {
+            console.error('Erro ao buscar foto:', err);
+            return res.status(500).json({ error: 'Erro ao buscar foto' });
+        }
+
+        if (!photo) {
+            return res.status(404).json({ error: 'Foto não encontrada' });
+        }
+
+        db.run('DELETE FROM profile_photos WHERE id = ? AND user_id = ?', [photoId, userId], function(err) {
+            if (err) {
+                console.error('Erro ao remover foto:', err);
+                return res.status(500).json({ error: 'Erro ao remover foto' });
+            }
+
+            // Se era a foto principal, limpar avatar_url
+            if (photo.is_primary) {
+                db.run('UPDATE users SET avatar_url = NULL WHERE id = ?', [userId]);
+            }
+
+            logActivity(userId, 'PROFILE_PHOTO_DELETED', 'Foto de perfil removida', req);
+            res.json({ message: 'Foto removida com sucesso' });
+        });
+    });
+});
+
+// Obter opções para formulários (denominações, versões da Bíblia, etc.)
+app.get('/api/profile/options', (req, res) => {
+    const options = {
+        denominations: [
+            'Católica Romana', 'Católica Ortodoxa',
+            'Assembleia de Deus', 'Batista', 'Presbiteriana', 'Metodista',
+            'Pentecostal', 'Adventista do 7º Dia', 'Universal do Reino de Deus',
+            'Igreja do Evangelho Quadrangular', 'Congregação Cristã no Brasil',
+            'Igreja de Cristo', 'Luterana', 'Episcopal', 'Reformada',
+            'Igreja Cristã Maranata', 'Igreja Mundial do Poder de Deus',
+            'Igreja Apostólica Renascer em Cristo', 'Igreja Internacional da Graça',
+            'Casa de Oração para Todos os Povos', 'Bola de Neve Church',
+            'Hillsong', 'Lagoinha', 'Outra'
+        ],
+        bible_versions: [
+            'NVI - Nova Versão Internacional',
+            'ARA - Almeida Revista e Atualizada',
+            'ARC - Almeida Revista e Corrigida',
+            'NVT - Nova Versão Transformadora',
+            'BLH - Bíblia na Linguagem de Hoje',
+            'ACF - Almeida Corrigida Fiel',
+            'TB - Tradução Brasileira',
+            'NTLH - Nova Tradução na Linguagem de Hoje',
+            'NAA - Nova Almeida Atualizada',
+            'NKJV - New King James Version',
+            'ESV - English Standard Version',
+            'NIV - New International Version',
+            'KJV - King James Version'
+        ],
+        marital_status: [
+            { value: 'solteiro', label: 'Solteiro' },
+            { value: 'namorado', label: 'Namorando' },
+            { value: 'noivo', label: 'Noivo' },
+            { value: 'casado', label: 'Casado' },
+            { value: 'divorciado', label: 'Divorciado' },
+            { value: 'viuvo', label: 'Viúvo' }
+        ],
+        education_levels: [
+            { value: 'fundamental', label: 'Ensino Fundamental' },
+            { value: 'medio', label: 'Ensino Médio' },
+            { value: 'superior', label: 'Ensino Superior' },
+            { value: 'pos-graduacao', label: 'Pós-graduação' },
+            { value: 'mestrado', label: 'Mestrado' },
+            { value: 'doutorado', label: 'Doutorado' }
+        ],
+        brazilian_states: [
+            'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará',
+            'Distrito Federal', 'Espírito Santo', 'Goiás', 'Maranhão',
+            'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará',
+            'Paraíba', 'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro',
+            'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia',
+            'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
+        ],
+        profile_visibility: [
+            { value: 'public', label: 'Público - Visível para todos' },
+            { value: 'partners_only', label: 'Apenas Parceiros - Visível apenas para outros IntelliMen' },
+            { value: 'private', label: 'Privado - Apenas para você' }
+        ]
+    };
+
+    res.json(options);
+});
+
+// Buscar perfis públicos (para networking entre IntelliMen)
+app.get('/api/profiles/public', authenticateToken, (req, res) => {
+    const { page = 1, limit = 12, denomination, state, search } = req.query;
+    const offset = (page - 1) * limit;
+    
+    let query = `
+        SELECT 
+            id, name, full_name, city, state, denomination, church_name,
+            profession, about_me, avatar_url, created_at,
+            (SELECT COUNT(*) FROM user_progress WHERE user_id = users.id AND completed = 1) as completed_challenges
+        FROM users 
+        WHERE profile_visibility = 'public' 
+        AND id != ?
+    `;
+    
+    const params = [req.user.id];
+    
+    if (denomination) {
+        query += ' AND denomination = ?';
+        params.push(denomination);
+    }
+    
+    if (state) {
+        query += ' AND state = ?';
+        params.push(state);
+    }
+    
+    if (search) {
+        query += ' AND (name LIKE ? OR full_name LIKE ? OR city LIKE ? OR profession LIKE ?)';
+        const searchTerm = `%${search}%`;
+        params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+    }
+    
+    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+    
+    db.all(query, params, (err, profiles) => {
+        if (err) {
+            console.error('Erro ao buscar perfis:', err);
+            return res.status(500).json({ error: 'Erro ao buscar perfis' });
+        }
+        
+        // Contar total para paginação
+        let countQuery = 'SELECT COUNT(*) as total FROM users WHERE profile_visibility = "public" AND id != ?';
+        const countParams = [req.user.id];
+        
+        if (denomination) {
+            countQuery += ' AND denomination = ?';
+            countParams.push(denomination);
+        }
+        
+        if (state) {
+            countQuery += ' AND state = ?';
+            countParams.push(state);
+        }
+        
+        if (search) {
+            countQuery += ' AND (name LIKE ? OR full_name LIKE ? OR city LIKE ? OR profession LIKE ?)';
+            const searchTerm = `%${search}%`;
+            countParams.push(searchTerm, searchTerm, searchTerm, searchTerm);
+        }
+        
+        db.get(countQuery, countParams, (err, countResult) => {
+            if (err) {
+                console.error('Erro ao contar perfis:', err);
+                return res.status(500).json({ error: 'Erro ao buscar perfis' });
+            }
+            
+            res.json({
+                profiles,
+                pagination: {
+                    page: parseInt(page),
+                    limit: parseInt(limit),
+                    total: countResult.total,
+                    totalPages: Math.ceil(countResult.total / limit)
+                }
+            });
+        });
+    });
+});
+
+// Ver perfil específico (respeitando privacidade)
+app.get('/api/profile/:userId', authenticateToken, (req, res) => {
+    const viewerId = req.user.id;
+    const targetUserId = req.params.userId;
+    
+    db.get(`
+        SELECT 
+            id, name, full_name, city, state, denomination, church_name,
+            profession, about_me, avatar_url, created_at, profile_visibility,
+            (SELECT COUNT(*) FROM user_progress WHERE user_id = users.id AND completed = 1) as completed_challenges
+        FROM users 
+        WHERE id = ?
+    `, [targetUserId], (err, profile) => {
+        if (err) {
+            console.error('Erro ao buscar perfil:', err);
+            return res.status(500).json({ error: 'Erro ao buscar perfil' });
+        }
+        
+        if (!profile) {
+            return res.status(404).json({ error: 'Perfil não encontrado' });
+        }
+        
+        // Verificar permissões
+        if (profile.profile_visibility === 'private' && profile.id !== viewerId) {
+            return res.status(403).json({ error: 'Perfil privado' });
+        }
+        
+        if (profile.profile_visibility === 'partners_only' && profile.id !== viewerId) {
+            // Em produção, verificar se são parceiros ou amigos
+            // Por enquanto, permitir acesso
+        }
+        
+        res.json(profile);
+    });
+});
+
+// ===== ROTAS EXISTENTES (mantidas) =====
+
+// Obter dados do usuário (mantida para compatibilidade)
+app.get('/api/user', authenticateToken, (req, res) => {
+    db.get('SELECT id, name, email, partner, created_at, last_login FROM users WHERE id = ?', 
+        [req.user.id], (err, user) => {
+            if (err) {
+                console.error('Erro ao buscar usuário:', err);
+                return res.status(500).json({ error: 'Erro ao buscar dados do usuário' });
+            }
+
+            if (!user) {
+                return res.status(404).json({ error: 'Usuário não encontrado' });
+            }
+
+            res.json(user);
+        }
+    );
+});
+
+// Atualizar dados básicos do usuário (mantida para compatibilidade)
 app.put('/api/user', authenticateToken, (req, res) => {
     const { name, partner } = req.body;
-    
+
     if (!name) {
         return res.status(400).json({ error: 'Nome é obrigatório' });
     }
@@ -494,13 +825,61 @@ app.put('/api/user', authenticateToken, (req, res) => {
                 return res.status(500).json({ error: 'Erro ao atualizar dados' });
             }
 
-            logActivity(req.user.id, 'USER_UPDATED', 'Dados do perfil atualizados', req);
+            logActivity(req.user.id, 'USER_UPDATED', 'Dados básicos atualizados', req);
             res.json({ message: 'Dados atualizados com sucesso' });
         }
     );
 });
 
-// ROTAS DE ESTATÍSTICAS
+// Obter progresso dos desafios
+app.get('/api/progress', authenticateToken, (req, res) => {
+    db.all(`
+        SELECT challenge_id, completed, completed_at, notes, updated_at
+        FROM user_progress 
+        WHERE user_id = ? 
+        ORDER BY challenge_id
+    `, [req.user.id], (err, progress) => {
+        if (err) {
+            console.error('Erro ao buscar progresso:', err);
+            return res.status(500).json({ error: 'Erro ao buscar progresso' });
+        }
+
+        res.json(progress);
+    });
+});
+
+// Atualizar progresso de um desafio
+app.post('/api/progress/:challengeId', authenticateToken, (req, res) => {
+    const { challengeId } = req.params;
+    const { completed, notes } = req.body;
+    const userId = req.user.id;
+
+    if (challengeId < 1 || challengeId > 53) {
+        return res.status(400).json({ error: 'ID do desafio inválido' });
+    }
+
+    const query = `
+        INSERT OR REPLACE INTO user_progress 
+        (user_id, challenge_id, completed, completed_at, notes, updated_at) 
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    const completedAt = completed ? new Date().toISOString() : null;
+    const updatedAt = new Date().toISOString();
+
+    db.run(query, [userId, challengeId, completed ? 1 : 0, completedAt, notes || '', updatedAt], function(err) {
+        if (err) {
+            console.error('Erro ao atualizar progresso:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar progresso' });
+        }
+
+        const action = completed ? 'CHALLENGE_COMPLETED' : 'CHALLENGE_UPDATED';
+        const details = `Desafio ${challengeId}: ${completed ? 'Concluído' : 'Atualizado'}`;
+        logActivity(userId, action, details, req);
+
+        res.json({ message: 'Progresso atualizado com sucesso' });
+    });
+});
 
 // Obter estatísticas do sistema
 app.get('/api/stats', (req, res) => {
@@ -517,126 +896,6 @@ app.get('/api/stats', (req, res) => {
 
         res.json(stats[0]);
     });
-});
-
-// ROTAS DE ADMINISTRAÇÃO (opcional)
-
-// Listar todos os usuários (admin)
-app.get('/api/admin/users', authenticateToken, (req, res) => {
-    // Verificação simples de admin (em produção, implementar sistema de roles)
-    if (req.user.email !== 'admin@intellimen.com') {
-        return res.status(403).json({ error: 'Acesso negado' });
-    }
-
-    db.all(`
-        SELECT 
-            u.id, u.name, u.email, u.partner, u.created_at, u.last_login,
-            COUNT(up.id) as completed_challenges
-        FROM users u
-        LEFT JOIN user_progress up ON u.id = up.user_id AND up.completed = 1
-        GROUP BY u.id
-        ORDER BY u.created_at DESC
-    `, (err, users) => {
-        if (err) {
-            console.error('Erro ao buscar usuários:', err);
-            return res.status(500).json({ error: 'Erro ao buscar usuários' });
-        }
-
-        res.json(users);
-    });
-});
-
-// Criar página de reset de senha
-app.get('/reset-password', (req, res) => {
-    const { token } = req.query;
-    
-    if (!token) {
-        return res.status(400).send('Token não fornecido');
-    }
-
-    const html = `
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Redefinir Senha - IntelliMen</title>
-        <style>
-            body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-            .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            .form-group { margin-bottom: 20px; }
-            label { display: block; margin-bottom: 5px; font-weight: bold; }
-            input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-            button { width: 100%; padding: 12px; background: #000; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-            button:hover { background: #333; }
-            .message { padding: 10px; margin-bottom: 20px; border-radius: 5px; }
-            .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-            .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>IntelliMen - Redefinir Senha</h2>
-            <div id="message"></div>
-            <form id="resetForm">
-                <div class="form-group">
-                    <label for="newPassword">Nova Senha:</label>
-                    <input type="password" id="newPassword" required minlength="6">
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirmar Senha:</label>
-                    <input type="password" id="confirmPassword" required minlength="6">
-                </div>
-                <button type="submit">Redefinir Senha</button>
-            </form>
-        </div>
-
-        <script>
-            document.getElementById('resetForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const newPassword = document.getElementById('newPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-                const messageDiv = document.getElementById('message');
-                
-                if (newPassword !== confirmPassword) {
-                    messageDiv.innerHTML = '<div class="error">As senhas não conferem!</div>';
-                    return;
-                }
-                
-                try {
-                    const response = await fetch('/api/reset-password', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            token: '${token}',
-                            newPassword: newPassword
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (response.ok) {
-                        messageDiv.innerHTML = '<div class="success">' + data.message + '</div>';
-                        document.getElementById('resetForm').style.display = 'none';
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 3000);
-                    } else {
-                        messageDiv.innerHTML = '<div class="error">' + data.error + '</div>';
-                    }
-                } catch (error) {
-                    messageDiv.innerHTML = '<div class="error">Erro de conexão. Tente novamente.</div>';
-                }
-            });
-        </script>
-    </body>
-    </html>
-    `;
-    
-    res.send(html);
 });
 
 // Servir arquivos estáticos (frontend)
@@ -688,9 +947,13 @@ function startServer() {
         console.log('📋 ENDPOINTS PRINCIPAIS:');
         console.log('• POST /api/register - Registro');
         console.log('• POST /api/login - Login');
+        console.log('• GET /api/profile - Perfil completo');
+        console.log('• PUT /api/profile/personal - Dados pessoais');
+        console.log('• PUT /api/profile/religious - Dados religiosos');
+        console.log('• PUT /api/profile/privacy - Configurações');
+        console.log('• POST /api/profile/photo - Upload foto');
         console.log('• GET /api/progress - Progresso');
         console.log('• POST /api/progress/:id - Atualizar');
-        console.log('• GET /api/user - Dados do usuário');
         console.log('• GET /api/stats - Estatísticas');
         console.log('===============================\n');
         

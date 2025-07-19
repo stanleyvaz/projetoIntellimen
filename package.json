@@ -1,56 +1,64 @@
 {
   "name": "intellimen-website",
   "version": "1.0.0",
-  "description": "IntelliMen - 53 Desafios Para Homens Inteligentes - Website Oficial",
+  "description": "IntelliMen - 53 Desafios Para Homens Inteligentes. Plataforma web baseada no livro de Renato Cardoso.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "setup": "npm install && node setup.js",
-    "build": "echo 'Building static assets...' && npm run setup",
-    "test": "echo 'Running tests...' && node test.js",
-    "deploy": "echo 'Deploying to production...'",
-    "reset-db": "rm -f intellimen.db && node server.js",
-    "backup-db": "cp intellimen.db intellimen_backup_$(date +%Y%m%d_%H%M%S).db"
+    "setup": "node intellimen-setup.js",
+    "reset-db": "node scripts/reset-database.js",
+    "backup-db": "node scripts/backup-database.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "intellimen",
-    "desafios",
-    "homens",
-    "desenvolvimento",
-    "autoajuda",
+    "desenvolvimento-pessoal",
     "masculinidade",
-    "crescimento-pessoal",
-    "webapp",
+    "desafios",
+    "renato-cardoso",
+    "homens-inteligentes",
     "nodejs",
+    "express",
     "sqlite"
   ],
   "author": {
-    "name": "IntelliMen Team",
-    "email": "contato@intellimen.com",
-    "url": "https://intellimen.com"
+    "name": "Stanley Vaz",
+    "email": "seu-email@gmail.com",
+    "url": "https://github.com/SEU_USUARIO"
   },
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.2",
-    "sqlite3": "^5.1.6",
-    "bcrypt": "^5.1.1",
-    "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.7",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "express-rate-limit": "^7.1.5",
-    "dotenv": "^16.3.1",
-    "compression": "^1.7.4"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SEU_USUARIO/intellimen-website.git"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.2",
-    "jest": "^29.7.0",
-    "supertest": "^6.3.3",
-    "eslint": "^8.55.0"
+  "bugs": {
+    "url": "https://github.com/SEU_USUARIO/intellimen-website/issues"
   },
+  "homepage": "https://github.com/SEU_USUARIO/intellimen-website#readme",
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.4",
+    "express-rate-limit": "^6.10.0",
+    "helmet": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "intellimen.db",
+      "public/*",
+      "node_modules/*"
+    ]
   }
 }

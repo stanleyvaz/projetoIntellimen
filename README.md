@@ -1,6 +1,6 @@
 # IntelliMen - 53 Desafios Para Homens Inteligentes
 
-Website oficial do projeto IntelliMen, baseado no livro de Renato Cardoso.
+Website oficial do projeto IntelliMen, baseado no livro do bispo Renato Cardoso.
 
 ## 🎯 Sobre o Projeto
 
@@ -71,7 +71,7 @@ npm run dev
 intellimen-website/
 ├── server.js              # Servidor principal
 ├── package.json           # Dependências e scripts
-├── public/                 # Arquivos estáticos
+├── public/                # Arquivos estáticos
 │   └── index.html         # Frontend principal
 ├── intellimen.db          # Banco de dados SQLite
 ├── .env                   # Variáveis de ambiente

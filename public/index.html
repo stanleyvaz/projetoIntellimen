@@ -179,11 +179,30 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #000;
+            width: auto;
+            min-width: 100px;
+            font-size: 0.9rem;
+            padding: 10px 15px;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
         }
 
         .manifesto-btn {
@@ -518,6 +537,19 @@
             font-size: 1.1rem;
         }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::before {
+            content: "⏳";
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 768px) {
             .header {
                 min-height: 150px;
@@ -594,7 +626,7 @@
                 </div>
                 <h1>PROJETO INTELLIMEN</h1>
                 <p>53 Desafios Para Homens Inteligentes</p>
-                <div class="header-subtitle">BEM-VINDO AO NOVO SITE</div>
+                <div class="header-subtitle">Baseado no livro de Renato Cardoso</div>
                 <button class="btn manifesto-btn" onclick="openManifestoModal()">
                     📖 Ler o Manifesto
                 </button>
@@ -662,6 +694,8 @@
                 </div>
                 <div class="buttons">
                     <button class="btn export-btn" onclick="exportProgress()">📄 Exportar</button>
+                    <button class="btn btn-secondary" onclick="openProfileModal()">👤 Perfil</button>
+                    <button class="btn btn-secondary" onclick="openManifestoModal()">📖 Manifesto</button>
                     <button class="btn logout-btn" onclick="logout()">🚪 Sair</button>
                 </div>
             </div>
@@ -674,7 +708,7 @@
             </p>
 
             <div class="lema-section">
-                <h3>Lema do IntelliMan</h3>
+                <h3>🎯 Lema do IntelliMan</h3>
                 <p>
                     "Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. 
                     Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. 
@@ -685,6 +719,55 @@
 
             <div class="challenges-grid" id="challengesGrid">
                 <!-- Desafios serão carregados aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Perfil do Usuário -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 Perfil do Usuário</h2>
+                <button class="close-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div style="line-height: 1.6;">
+                <h3>📋 Informações Pessoais</h3>
+                <form id="profileForm" onsubmit="updateProfile(event)">
+                    <div class="form-group">
+                        <label for="profileName">Nome Completo:</label>
+                        <input type="text" id="profileName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email:</label>
+                        <input type="email" id="profileEmail" required readonly style="background: #f5f5f5;">
+                        <small style="color: #666;">O email não pode ser alterado</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePartner">Parceiro Oficial:</label>
+                        <input type="text" id="profilePartner" placeholder="Nome do seu parceiro oficial">
+                    </div>
+                    <button type="submit" class="btn">💾 Atualizar Dados</button>
+                </form>
+                
+                <hr style="margin: 30px 0;">
+                
+                <h3>📊 Estatísticas do Progresso</h3>
+                <div id="profileStats" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                    <!-- Estatísticas serão carregadas aqui -->
+                </div>
+                
+                <hr style="margin: 30px 0;">
+                
+                <h3>🔒 Segurança</h3>
+                <button class="btn btn-secondary" onclick="changePassword()" style="width: 100%; margin: 10px 0;">
+                    🔑 Alterar Senha
+                </button>
+                
+                <h3 style="margin-top: 30px;">⚠️ Zona de Perigo</h3>
+                <button class="btn" onclick="resetProgress()" style="background: #dc3545; width: 100%; margin: 10px 0;">
+                    🗑️ Resetar Todo o Progresso
+                </button>
+                <small style="color: #666; font-style: italic;">Esta ação não pode ser desfeita!</small>
             </div>
         </div>
     </div>
@@ -743,6 +826,19 @@
                 <div style="background: linear-gradient(135deg, #000000 0%, #333333 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
                     <p style="font-size: 1.1rem; margin: 0;"><em>"Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. Conhece o seu valor diante dos homens e de Deus. Ama a disciplina, o caráter e o bem. Sua missão é inspirar outros a se tornarem IntelliMen."</em></p>
                 </div>
+                
+                <hr style="margin: 20px 0;">
+                
+                <h3>CONDIÇÕES DE PARTICIPAÇÃO</h3>
+                <ol style="line-height: 1.6; margin-left: 20px;">
+                    <li><strong>Compromisso Total:</strong> Você deve estar disposto a fazer todos os 53 desafios, sem exceção.</li>
+                    <li><strong>Parceiro Oficial:</strong> Você deve encontrar um parceiro para fazer o projeto junto.</li>
+                    <li><strong>Transparência:</strong> Compartilhar seu progresso e aprendizados.</li>
+                    <li><strong>Persistência:</strong> Não desistir, mesmo quando os desafios ficarem difíceis.</li>
+                    <li><strong>Integridade:</strong> Ser honesto consigo mesmo e com seu progresso.</li>
+                </ol>
+                
+                <p style="text-align: center; margin-top: 30px;"><strong>Está pronto para se tornar um IntelliMan?</strong></p>
             </div>
         </div>
     </div>
@@ -763,7 +859,8 @@
 • Como você se sentiu fazendo este desafio?
 • Quais dificuldades encontrou?
 • O que aprendeu sobre si mesmo?
-• Como vai aplicar isso no dia a dia?"></textarea>
+• Como vai aplicar isso no dia a dia?
+• Que decisões tomou em decorrência deste desafio?"></textarea>
                 <button class="btn complete-btn" onclick="completeChallenge()">Salvar e Marcar como Concluído</button>
             </div>
         </div>
@@ -773,7 +870,10 @@
         // Configuração da API
         const API_BASE_URL = window.location.origin;
         
-        // Dados dos desafios com links externos (baseados no PDF)
+        // Variáveis globais
+        let currentUser = null;
+
+        // Dados completos dos 53 desafios do IntelliMen
         const challenges = [
             {
                 id: 1,
@@ -781,8 +881,8 @@
                 description: "Encontrar um parceiro para fazer o projeto com você e tornar pública sua participação.",
                 details: "Você vai convidar alguém para começar o Projeto IntelliMen com você. Pode ser um amigo, irmão, colega no trabalho ou na igreja, primo, seu pai, seu filho, seu pastor etc. Escolha alguém legal, que vai levar o projeto a sério e não deixá-lo na mão no meio do caminho.",
                 links: [
-                    { text: "Página oficial do IntelliMen", url: "https://facebook.com/intellimen" },
-                    { text: "Twitter do IntelliMen", url: "https://twitter.com/intellimen27" }
+                    { text: "🌐 Página oficial do IntelliMen", url: "https://facebook.com/intellimen" },
+                    { text: "🐦 Twitter do IntelliMen", url: "https://twitter.com/intellimen27" }
                 ]
             },
             {
@@ -989,7 +1089,7 @@
                 description: "Usar a negatividade dos outros a seu respeito como combustível para conseguir o que quer.",
                 details: "Você vai identificar algum sonho que foi sufocado pela negatividade dos outros e usar essa negatividade como energia para persegui-lo.",
                 links: [
-                    { text: "História real de Carl Brashear", url: "https://pt.wikipedia.org/wiki/Homens_de_Honra" }
+                    { text: "🎬 História real de Carl Brashear", url: "https://pt.wikipedia.org/wiki/Homens_de_Honra" }
                 ]
             },
             {
@@ -1092,7 +1192,7 @@
                 id: 44,
                 title: "Revisão e Leitura",
                 description: "Rever os desafios desde o 27 até o 43 e fazer a leitura da semana.",
-                details: "Chegou outro momento de reflexão. Você vai revisar desde o desafio 27 até o 43 e meditar em Hebreus 11 sobre homens corajosos da história.",
+                details: "Chegou outro momento de reflexão. Você vai revisar desde o desafio 27 até o 43 e meditar em Hebreus 11 sobre homens corajosos da história."
             },
             {
                 id: 45,
@@ -1156,22 +1256,17 @@
                 id: 52,
                 title: "Encontro com Homens",
                 description: "Organizar um encontro com homens para falar do IntelliMen.",
-                details: "Você vai organizar um encontro para falar sobre como o projeto o tem ajudado e motivar outros homens a participar.",
+                details: "Você vai organizar um encontro para falar sobre como o projeto o tem ajudado e motivar outros homens a participar."
             },
             {
                 id: 53,
                 title: "Revisão Final",
                 description: "Certificar-se de ter cumprido todos os 52 desafios. Todos.",
-                details: "Você vai revisar rigorosamente todos os desafios para garantir que cumpriu todos à risca. Missão dada é missão cumprida."
+                details: "Você vai revisar rigorosamente todos os desafios para garantir que cumpriu todos à risca. Missão dada é missão cumprida. Um IntelliMan é um homem inteligente que termina o que começou."
             }
         ];
 
-        // Simulação de banco de dados local
-        let currentUser = null;
-        let users = JSON.parse(localStorage.getItem('intellimen_users')) || [];
-        let userProgress = JSON.parse(localStorage.getItem('intellimen_progress')) || {};
-
-        // Funções de autenticação
+        // Funções de autenticação integradas com backend
         function showAuthForm(formType) {
             document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
@@ -1180,7 +1275,7 @@
             document.getElementById(formType + 'Form').classList.add('active');
         }
 
-        function register(event) {
+        async function register(event) {
             event.preventDefault();
             
             const name = document.getElementById('registerName').value;
@@ -1188,50 +1283,65 @@
             const password = document.getElementById('registerPassword').value;
             const partner = document.getElementById('registerPartner').value;
             
-            // Verificar se usuário já existe
-            if (users.find(user => user.email === email)) {
-                alert('Este email já está cadastrado!');
-                return;
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password, partner })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Cadastro realizado com sucesso!');
+                    showAuthForm('login');
+                    // Limpar formulário
+                    document.getElementById('registerForm').reset();
+                } else {
+                    alert(data.error || 'Erro ao cadastrar usuário');
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Erro de conexão. Tente novamente.');
             }
-            
-            // Criar novo usuário
-            const newUser = {
-                id: Date.now(),
-                name,
-                email,
-                password,
-                partner: partner || 'Não definido',
-                joinDate: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('intellimen_users', JSON.stringify(users));
-            
-            // Inicializar progresso do usuário
-            userProgress[newUser.id] = {};
-            localStorage.setItem('intellimen_progress', JSON.stringify(userProgress));
-            
-            alert('Cadastro realizado com sucesso!');
-            showAuthForm('login');
         }
 
-        function login(event) {
+        async function login(event) {
             event.preventDefault();
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                currentUser = user;
-                showDashboard();
-            } else {
-                alert('Email ou senha incorretos!');
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Salvar token no localStorage
+                    localStorage.setItem('token', data.token);
+                    currentUser = data.user;
+                    showDashboard();
+                } else {
+                    alert(data.error || 'Email ou senha incorretos');
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Erro de conexão. Tente novamente.');
             }
         }
 
         function logout() {
+            // Limpar token
+            localStorage.removeItem('token');
             currentUser = null;
             document.getElementById('authSection').style.display = 'block';
             document.getElementById('dashboard').classList.remove('active');
@@ -1243,22 +1353,58 @@
             
             // Atualizar informações do usuário
             document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('partnerName').textContent = currentUser.partner;
+            document.getElementById('partnerName').textContent = currentUser.partner || 'Não definido';
             
             loadChallenges();
             updateProgress();
         }
 
-        function loadChallenges() {
+        // Função para carregar desafios do backend
+        async function loadChallenges() {
+            const grid = document.getElementById('challengesGrid');
+            grid.innerHTML = '<div class="loading">Carregando desafios...</div>';
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/progress`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const progress = await response.json();
+                    renderChallenges(progress);
+                } else if (response.status === 401) {
+                    // Token inválido, fazer logout
+                    logout();
+                    alert('Sessão expirada. Faça login novamente.');
+                } else {
+                    throw new Error('Erro ao carregar progresso');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar desafios:', error);
+                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: red;">Erro ao carregar desafios. Tente atualizar a página.</div>';
+            }
+        }
+
+        function renderChallenges(progressData) {
             const grid = document.getElementById('challengesGrid');
             grid.innerHTML = '';
             
+            // Converter array de progresso em objeto para facilitar busca
+            const progressMap = {};
+            progressData.forEach(p => {
+                progressMap[p.challenge_id] = p;
+            });
+            
             challenges.forEach(challenge => {
-                const isCompleted = userProgress[currentUser.id] && userProgress[currentUser.id][challenge.id];
+                const progress = progressMap[challenge.id];
+                const isCompleted = progress && progress.completed;
                 
                 const card = document.createElement('div');
                 card.className = `challenge-card ${isCompleted ? 'completed' : ''}`;
-                card.onclick = () => openChallengeModal(challenge);
+                card.onclick = () => openChallengeModal(challenge, progress);
                 
                 let linksHtml = '';
                 if (challenge.links && challenge.links.length > 0) {
@@ -1287,7 +1433,7 @@
             });
         }
 
-        function openChallengeModal(challenge) {
+        function openChallengeModal(challenge, progress) {
             document.getElementById('modalTitle').innerHTML = `
                 <div class="logo-icon">IM</div>
                 Desafio #${challenge.id}: ${challenge.title}
@@ -1315,18 +1461,333 @@
             `;
             
             // Carregar anotações existentes
-            const notes = userProgress[currentUser.id] && userProgress[currentUser.id][challenge.id] 
-                ? userProgress[currentUser.id][challenge.id].notes || '' 
-                : '';
+            const notes = progress ? progress.notes || '' : '';
             document.getElementById('challengeNotes').value = notes;
             
-            // Mostrar/ocultar botão de conclusão
-            const isCompleted = userProgress[currentUser.id] && userProgress[currentUser.id][challenge.id];
+            // Configurar botão de conclusão
             const completeBtn = document.querySelector('.complete-btn');
-            completeBtn.textContent = isCompleted ? 'Atualizar Anotações' : 'Salvar e Marcar como Concluído';
+            completeBtn.textContent = progress && progress.completed 
+                ? 'Atualizar Anotações' 
+                : 'Salvar e Marcar como Concluído';
             completeBtn.onclick = () => completeChallenge(challenge.id);
             
             document.getElementById('challengeModal').classList.add('active');
+        }
+
+        async function completeChallenge(challengeId) {
+            const notes = document.getElementById('challengeNotes').value;
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/progress/${challengeId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        completed: true,
+                        notes: notes
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Desafio atualizado com sucesso!');
+                    closeModal();
+                    loadChallenges();
+                    updateProgress();
+                } else if (response.status === 401) {
+                    logout();
+                    alert('Sessão expirada. Faça login novamente.');
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Erro ao salvar desafio');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar desafio:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        async function updateProgress() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/progress`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const progress = await response.json();
+                    const completed = progress.filter(p => p.completed).length;
+                    const total = challenges.length;
+                    const percentage = (completed / total) * 100;
+                    
+                    document.getElementById('progressFill').style.width = percentage + '%';
+                    document.getElementById('progressText').textContent = `${completed}/${total}`;
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar progresso:', error);
+            }
+        }
+
+        // Função para exportar progresso integrada com backend
+        async function exportProgress() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/progress`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar progresso');
+                }
+                
+                const progressData = await response.json();
+                const completed = progressData.filter(p => p.completed).length;
+                const completionPercentage = ((completed/53)*100).toFixed(1);
+                
+                // Criar conteúdo em Markdown
+                let exportText = `# 📊 RELATÓRIO DE PROGRESSO - INTELLIMEN\n\n`;
+                
+                exportText += `## 👤 Dados do Participante\n\n`;
+                exportText += `- **Nome:** ${currentUser.name}\n`;
+                exportText += `- **Email:** ${currentUser.email}\n`;
+                exportText += `- **Parceiro Oficial:** ${currentUser.partner || 'Não definido'}\n`;
+                exportText += `- **Data do Relatório:** ${new Date().toLocaleDateString('pt-BR')}\n\n`;
+                
+                exportText += `## 📈 Resumo do Progresso\n\n`;
+                exportText += `> **${completed}/53 desafios concluídos (${completionPercentage}%)**\n\n`;
+                
+                // Barra de progresso visual em texto
+                const progressBar = '█'.repeat(Math.floor(completed/53 * 20)) + '░'.repeat(20 - Math.floor(completed/53 * 20));
+                exportText += `\`\`\`\n${progressBar} ${completionPercentage}%\n\`\`\`\n\n`;
+                
+                if (completed > 0) {
+                    exportText += `## ✅ Desafios Concluídos\n\n`;
+                    
+                    challenges.forEach(challenge => {
+                        const progress = progressData.find(p => p.challenge_id === challenge.id && p.completed);
+                        if (progress) {
+                            exportText += `### ${challenge.id}. ${challenge.title}\n\n`;
+                            exportText += `- **Status:** ✅ *Concluído*\n`;
+                            exportText += `- **Data de Conclusão:** ${new Date(progress.completed_at).toLocaleDateString('pt-BR')}\n`;
+                            
+                            if (progress.notes && progress.notes.trim()) {
+                                exportText += `- **Anotações:**\n  > ${progress.notes.replace(/\n/g, '\n  > ')}\n`;
+                            }
+                            exportText += `\n---\n\n`;
+                        }
+                    });
+                }
+                
+                const pendingChallenges = challenges.filter(challenge => 
+                    !progressData.find(p => p.challenge_id === challenge.id && p.completed)
+                );
+                
+                if (pendingChallenges.length > 0) {
+                    exportText += `## ⏳ Desafios Pendentes\n\n`;
+                    exportText += `*${pendingChallenges.length} desafios restantes para completar o projeto:*\n\n`;
+                    
+                    pendingChallenges.forEach(challenge => {
+                        exportText += `- [ ] **Desafio #${challenge.id}:** ${challenge.title}\n`;
+                    });
+                    exportText += `\n`;
+                }
+                
+                exportText += `## 🎯 Lema do IntelliMan\n\n`;
+                exportText += `> *"Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. Conhece o seu valor diante dos homens e de Deus. Ama a disciplina, o caráter e o bem. Sua missão é inspirar outros a se tornarem IntelliMen."*\n\n`;
+                
+                exportText += `---\n\n`;
+                exportText += `*Este relatório foi gerado automaticamente pelo sistema IntelliMen em ${new Date().toLocaleString('pt-BR')}*\n`;
+                
+                // Criar e baixar arquivo
+                const blob = new Blob([exportText], { type: 'text/markdown;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `intellimen_relatorio_${currentUser.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.md`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('📄 Relatório exportado com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao exportar progresso:', error);
+                alert('Erro ao exportar relatório. Tente novamente.');
+            }
+        }
+
+        function openProfileModal() {
+            // Carregar dados atuais do usuário
+            document.getElementById('profileName').value = currentUser.name;
+            document.getElementById('profileEmail').value = currentUser.email;
+            document.getElementById('profilePartner').value = currentUser.partner || '';
+            
+            // Carregar estatísticas
+            loadProfileStats();
+            
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        async function updateProfile(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('profileName').value;
+            const partner = document.getElementById('profilePartner').value;
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/user`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, partner })
+                });
+                
+                if (response.ok) {
+                    // Atualizar dados locais
+                    currentUser.name = name;
+                    currentUser.partner = partner;
+                    
+                    // Atualizar interface
+                    document.getElementById('userName').textContent = name;
+                    document.getElementById('partnerName').textContent = partner || 'Não definido';
+                    
+                    alert('✅ Perfil atualizado com sucesso!');
+                    closeProfileModal();
+                } else if (response.status === 401) {
+                    logout();
+                    alert('Sessão expirada. Faça login novamente.');
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Erro ao atualizar perfil');
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar perfil:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        async function loadProfileStats() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/progress`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const progress = await response.json();
+                    const completed = progress.filter(p => p.completed).length;
+                    const total = challenges.length;
+                    const percentage = ((completed / total) * 100).toFixed(1);
+                    
+                    // Calcular data de início (primeira atividade)
+                    const firstActivity = progress.find(p => p.completed);
+                    const startDate = firstActivity ? new Date(firstActivity.completed_at).toLocaleDateString('pt-BR') : 'Ainda não iniciado';
+                    
+                    // Calcular desafios por semana (últimas 4 semanas)
+                    const fourWeeksAgo = new Date();
+                    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+                    const recentChallenges = progress.filter(p => 
+                        p.completed && new Date(p.completed_at) >= fourWeeksAgo
+                    ).length;
+                    
+                    document.getElementById('profileStats').innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${completed}</div>
+                                <div style="color: #666;">Desafios Concluídos</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${percentage}%</div>
+                                <div style="color: #666;">Progresso Total</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${recentChallenges}</div>
+                                <div style="color: #666;">Últimas 4 Semanas</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: #000;">${startDate}</div>
+                                <div style="color: #666;">Data de Início</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                            <h4 style="margin-bottom: 10px;">🏆 Nível IntelliMan</h4>
+                            ${getIntelliManLevel(completed)}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                document.getElementById('profileStats').innerHTML = '<p style="color: red;">Erro ao carregar estatísticas</p>';
+            }
+        }
+
+        function getIntelliManLevel(completed) {
+            if (completed >= 50) {
+                return '<div style="color: #d4af37; font-weight: bold;">🌟 INTELLIMAN TOP 5 - Liga dos Melhores!</div>';
+            } else if (completed >= 30) {
+                return '<div style="color: #cd7f32; font-weight: bold;">🔥 INTELLIMAN FERA - Você é fera!</div>';
+            } else if (completed >= 15) {
+                return '<div style="color: #c0c0c0; font-weight: bold;">💪 INTELLIMAN ESFORÇADO - Valeu o esforço!</div>';
+            } else if (completed >= 5) {
+                return '<div style="color: #8b4513; font-weight: bold;">🎯 INTELLIMAN BÁSICO - Pelo menos você tentou!</div>';
+            } else {
+                return '<div style="color: #666;">📚 INICIANTE - Continue se esforçando!</div>';
+            }
+        }
+
+        function changePassword() {
+            const newPassword = prompt('Digite sua nova senha:');
+            if (newPassword && newPassword.length >= 6) {
+                // Aqui você implementaria a mudança de senha via API
+                alert('⚠️ Funcionalidade em desenvolvimento. Por enquanto, entre em contato com o suporte.');
+            } else if (newPassword) {
+                alert('A senha deve ter pelo menos 6 caracteres.');
+            }
+        }
+
+        async function resetProgress() {
+            const confirm1 = confirm('⚠️ ATENÇÃO: Esta ação irá DELETAR TODO seu progresso no IntelliMen!\n\nTodos os desafios concluídos e anotações serão perdidos permanentemente.\n\nTem certeza que deseja continuar?');
+            
+            if (confirm1) {
+                const confirm2 = confirm('🚨 ÚLTIMA CHANCE!\n\nEsta é sua última oportunidade de desistir.\n\nSe continuar, TODO seu progresso será PERDIDO PARA SEMPRE.\n\nConfirma a exclusão de todos os dados?');
+                
+                if (confirm2) {
+                    const finalConfirm = prompt('Para confirmar, digite "DELETAR TUDO" (sem aspas):');
+                    
+                    if (finalConfirm === 'DELETAR TUDO') {
+                        try {
+                            const token = localStorage.getItem('token');
+                            // Aqui você implementaria a exclusão via API
+                            // Por enquanto, vamos simular
+                            alert('🗑️ Todo o progresso foi resetado!\n\nVocê pode começar os desafios novamente.');
+                            closeProfileModal();
+                            loadChallenges();
+                            updateProgress();
+                        } catch (error) {
+                            alert('Erro ao resetar progresso. Tente novamente.');
+                        }
+                    } else {
+                        alert('Cancelado. Seu progresso está seguro! 😅');
+                    }
+                }
+            }
         }
 
         function openManifestoModal() {
@@ -1341,128 +1802,11 @@
             document.getElementById('challengeModal').classList.remove('active');
         }
 
-        function completeChallenge(challengeId) {
-            if (!userProgress[currentUser.id]) {
-                userProgress[currentUser.id] = {};
-            }
-            
-            const notes = document.getElementById('challengeNotes').value;
-            userProgress[currentUser.id][challengeId] = {
-                completed: true,
-                completedAt: new Date().toISOString(),
-                notes: notes
-            };
-            
-            localStorage.setItem('intellimen_progress', JSON.stringify(userProgress));
-            
-            alert('Desafio atualizado com sucesso!');
-            closeModal();
-            loadChallenges();
-            updateProgress();
-        }
-
-        function updateProgress() {
-            const completed = Object.keys(userProgress[currentUser.id] || {}).length;
-            const total = challenges.length;
-            const percentage = (completed / total) * 100;
-            
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completed}/${total}`;
-        }
-
-        function exportProgress() {
-            const progress = userProgress[currentUser.id] || {};
-            const completedCount = Object.keys(progress).length;
-            const completionPercentage = ((completedCount/53)*100).toFixed(1);
-            
-            // Criar conteúdo em Markdown
-            let exportText = `# 📊 RELATÓRIO DE PROGRESSO - INTELLIMEN\n\n`;
-            
-            exportText += `## 👤 Dados do Participante\n\n`;
-            exportText += `- **Nome:** ${currentUser.name}\n`;
-            exportText += `- **Email:** ${currentUser.email}\n`;
-            exportText += `- **Parceiro Oficial:** ${currentUser.partner}\n`;
-            exportText += `- **Data de Cadastro:** ${new Date(currentUser.joinDate).toLocaleDateString('pt-BR')}\n`;
-            exportText += `- **Data do Relatório:** ${new Date().toLocaleDateString('pt-BR')}\n\n`;
-            
-            exportText += `## 📈 Resumo do Progresso\n\n`;
-            exportText += `> **${completedCount}/53 desafios concluídos (${completionPercentage}%)**\n\n`;
-            
-            // Barra de progresso visual em texto
-            const progressBar = '█'.repeat(Math.floor(completedCount/53 * 20)) + '░'.repeat(20 - Math.floor(completedCount/53 * 20));
-            exportText += `\`\`\`\n${progressBar} ${completionPercentage}%\n\`\`\`\n\n`;
-            
-            if (completedCount > 0) {
-                exportText += `## ✅ Desafios Concluídos\n\n`;
-                
-                challenges.forEach(challenge => {
-                    const challengeProgress = progress[challenge.id];
-                    if (challengeProgress) {
-                        exportText += `### ${challenge.id}. ${challenge.title}\n\n`;
-                        exportText += `- **Status:** ✅ *Concluído*\n`;
-                        exportText += `- **Data de Conclusão:** ${new Date(challengeProgress.completedAt).toLocaleDateString('pt-BR')}\n`;
-                        
-                        if (challengeProgress.notes && challengeProgress.notes.trim()) {
-                            exportText += `- **Anotações:**\n  > ${challengeProgress.notes.replace(/\n/g, '\n  > ')}\n`;
-                        }
-                        exportText += `\n---\n\n`;
-                    }
-                });
-            }
-            
-            const pendingChallenges = challenges.filter(challenge => !progress[challenge.id]);
-            if (pendingChallenges.length > 0) {
-                exportText += `## ⏳ Desafios Pendentes\n\n`;
-                exportText += `*${pendingChallenges.length} desafios restantes para completar o projeto:*\n\n`;
-                
-                pendingChallenges.forEach(challenge => {
-                    exportText += `- [ ] **Desafio #${challenge.id}:** ${challenge.title}\n`;
-                });
-                exportText += `\n`;
-            }
-            
-            // Estatísticas adicionais
-            if (completedCount > 0) {
-                const firstCompletedDate = Math.min(...Object.values(progress).map(p => new Date(p.completedAt).getTime()));
-                const lastCompletedDate = Math.max(...Object.values(progress).map(p => new Date(p.completedAt).getTime()));
-                const daysSinceStart = Math.ceil((Date.now() - firstCompletedDate) / (1000 * 60 * 60 * 24));
-                const avgPerWeek = (completedCount / (daysSinceStart / 7)).toFixed(1);
-                
-                exportText += `## 📊 Estatísticas\n\n`;
-                exportText += `| Métrica | Valor |\n`;
-                exportText += `|---------|-------|\n`;
-                exportText += `| **Primeiro desafio concluído** | ${new Date(firstCompletedDate).toLocaleDateString('pt-BR')} |\n`;
-                exportText += `| **Último desafio concluído** | ${new Date(lastCompletedDate).toLocaleDateString('pt-BR')} |\n`;
-                exportText += `| **Dias no projeto** | ${daysSinceStart} dias |\n`;
-                exportText += `| **Média por semana** | ${avgPerWeek} desafios |\n`;
-                exportText += `| **Desafios restantes** | ${53 - completedCount} |\n\n`;
-            }
-            
-            exportText += `## 🎯 Lema do IntelliMan\n\n`;
-            exportText += `> *"Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. Conhece o seu valor diante dos homens e de Deus. Ama a disciplina, o caráter e o bem. Sua missão é inspirar outros a se tornarem IntelliMen."*\n\n`;
-            
-            exportText += `---\n\n`;
-            exportText += `*Este relatório foi gerado automaticamente pelo sistema IntelliMen em ${new Date().toLocaleString('pt-BR')}*\n\n`;
-            exportText += `**Para mais informações, visite:** [intellimen.com](http://intellimen.com)\n`;
-            
-            // Criar e baixar arquivo Markdown
-            const blob = new Blob([exportText], { type: 'text/markdown;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `intellimen_relatorio_${currentUser.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.md`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('📄 Relatório exportado em formato Markdown!\n\nO arquivo pode ser aberto em:\n• Editores de código (VS Code, Sublime)\n• Visualizadores Markdown\n• Convertido para PDF/HTML');
-        }
-
         // Fechar modal ao clicar fora
         window.onclick = function(event) {
             const challengeModal = document.getElementById('challengeModal');
             const manifestoModal = document.getElementById('manifestoModal');
+            const profileModal = document.getElementById('profileModal');
             
             if (event.target === challengeModal) {
                 closeModal();
@@ -1470,34 +1814,38 @@
             if (event.target === manifestoModal) {
                 closeManifestoModal();
             }
+            if (event.target === profileModal) {
+                closeProfileModal();
+            }
         }
 
-        // Verificar se há usuário logado ao carregar a página
-        window.onload = function() {
-            // Para demonstração, vamos criar alguns usuários de exemplo se não existirem
-            if (users.length === 0) {
-                const exampleUsers = [
-                    {
-                        id: 1,
-                        name: 'João Silva',
-                        email: 'joao@email.com',
-                        password: '123456',
-                        partner: 'Pedro Santos',
-                        joinDate: new Date().toISOString()
+        // Verificar se usuário está logado ao carregar a página
+        window.onload = async function() {
+            const token = localStorage.getItem('token');
+            
+            if (token) {
+                try {
+                    // Verificar se o token é válido obtendo dados do usuário
+                    const response = await fetch(`${API_BASE_URL}/api/user`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        currentUser = userData;
+                        showDashboard();
+                    } else {
+                        // Token inválido, remover
+                        localStorage.removeItem('token');
                     }
-                ];
-                users = exampleUsers;
-                localStorage.setItem('intellimen_users', JSON.stringify(users));
-                
-                // Progresso de exemplo
-                userProgress[1] = {
-                    1: { completed: true, completedAt: new Date().toISOString(), notes: 'Escolhi meu irmão como parceiro oficial.' },
-                    2: { completed: true, completedAt: new Date().toISOString(), notes: 'Identifiquei que preciso melhorar: exercícios, pontualidade e paciência.' },
-                    3: { completed: true, completedAt: new Date().toISOString(), notes: 'Minhas qualidades: responsável, determinado, leal.' }
-                };
-                localStorage.setItem('intellimen_progress', JSON.stringify(userProgress));
+                } catch (error) {
+                    console.error('Erro ao verificar autenticação:', error);
+                    localStorage.removeItem('token');
+                }
             }
         }
     </script>
 </body>
-</html>
+</html>>

@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - IntelliMen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 10px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .avatar-section {
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #000;
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+            background: #f0f0f0;
+        }
+
+        .avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #000;
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .tab-button.active {
+            color: #000;
+            border-bottom-color: #000;
+            background: white;
+        }
+
+        .tab-content {
+            padding: 30px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #000;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #000;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .photo-upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .photo-item .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .primary-badge {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: #000;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .progress-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #000000 0%, #333333 100%);
+            transition: width 0.3s ease;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::before {
+            content: "⏳";
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .profile-tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                border-bottom: none;
+                border-right: 3px solid transparent;
+            }
+
+            .tab-button.active {
+                border-bottom: none;
+                border-right-color: #000;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-stats {
+                gap: 15px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="btn btn-secondary back-button">← Voltar ao Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-logo">
+                    <div class="logo-icon">IM</div>
+                    <h1>Meu Perfil</h1>
+                </div>
+                <p>Complete seus dados pessoais e religiosos</p>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="avatar-section">
+                    <div id="userAvatar" class="avatar-placeholder">
+                        JD
+                    </div>
+                </div>
+                <div class="profile-name" id="userName">João Silva</div>
+                <div class="profile-email" id="userEmail">joao@email.com</div>
+                
+                <div class="progress-summary">
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="completedChallenges">0</div>
+                            <div class="stat-label">Desafios Concluídos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="profileComplete">0%</div>
+                            <div class="stat-label">Perfil Completo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="memberSince">2024</div>
+                            <div class="stat-label">Membro desde</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="profileProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tabs">
+                <button class="tab-button active" onclick="showTab('personal')">
+                    👤 Dados Pessoais
+                </button>
+                <button class="tab-button" onclick="showTab('religious')">
+                    ⛪ Dados Religiosos
+                </button>
+                <button class="tab-button" onclick="showTab('photos')">
+                    📷 Fotos
+                </button>
+                <button class="tab-button" onclick="showTab('privacy')">
+                    🔒 Privacidade
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Aba Dados Pessoais -->
+                <div id="personal-tab" class="tab-panel active">
+                    <div id="personalAlert"></div>
+                    
+                    <form id="personalForm">
+                        <div class="form-section">
+                            <h3>📋 Informações Básicas</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fullName">Nome Completo *</label>
+                                    <input type="text" id="fullName" name="full_name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthDate">Data de Nascimento</label>
+                                    <input type="date" id="birthDate" name="birth_date">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Telefone</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profession">Profissão</label>
+                                    <input type="text" id="profession" name="profession" placeholder="Ex: Engenheiro, Professor, Empresário">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>🏠 Endereço</h3>
+                            <div class="form-group">
+                                <label for="address">Endereço Completo</label>
+                                <input type="text" id="address" name="address" placeholder="Rua, Número, Bairro">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">Cidade</label>
+                                    <input type="text" id="city" name="city">
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">Estado</label>
+                                    <select id="state" name="state">
+                                        <option value="">Selecione o estado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="postalCode">CEP</label>
+                                    <input type="text" id="postalCode" name="postal_code" placeholder="00000-000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">País</label>
+                                    <input type="text" id="country" name="country" value="Brasil" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>👨‍👩‍👧‍👦 Família</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="maritalStatus">Estado Civil</label>
+                                    <select id="maritalStatus" name="marital_status">
+                                        <option value="">Selecione</option>
+                                        <option value="solteiro">Solteiro</option>
+                                        <option value="namorado">Namorando</option>
+                                        <option value="noivo">Noivo</option>
+                                        <option value="casado">Casado</option>
+                                        <option value="divorciado">Divorciado</option>
+                                        <option value="viuvo">Viúvo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="spouseName">Nome do(a) Cônjuge/Namorada(o)</label>
+                                    <input type="text" id="spouseName" name="spouse_name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="childrenCount">Número de Filhos</label>
+                                    <input type="number" id="childrenCount" name="children_count" min="0" max="20" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="educationLevel">Nível de Educação</label>
+                                    <select id="educationLevel" name="education_level">
+                                        <option value="">Selecione</option>
+                                        <option value="fundamental">Ensino Fundamental</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="superior">Ensino Superior</option>
+                                        <option value="pos-graduacao">Pós-graduação</option>
+                                        <option value="mestrado">Mestrado</option>
+                                        <option value="doutorado">Doutorado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>📝 Sobre Mim</h3>
+                            <div class="form-group">
+                                <label for="aboutMe">Conte um pouco sobre você</label>
+                                <textarea id="aboutMe" name="about_me" placeholder="Seus hobbies, interesses, objetivos, personalidade... Compartilhe o que achar importante!"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetPersonalForm()">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn">
+                                Salvar Dados Pessoais
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Aba Dados Religiosos -->
+                <div id="religious-tab" class="tab-panel">
+                    <div id="religiousAlert"></div>
+                    
+                    <form id="religiousForm">
+                        <div class="form-section">
+                            <h3>⛪ Igreja e Denominação</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="denomination">Denominação</label>
+                                    <select id="denomination" name="denomination">
+                                        <option value="">Selecione sua denominação</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="churchName">Nome da Igreja</label>
+                                    <input type="text" id="churchName" name="church_name" placeholder="Ex: Igreja Batista Central">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="churchAddress">Endereço da Igreja</label>
+                                <input type="text" id="churchAddress" name="church_address" placeholder="Rua, número, bairro, cidade">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="pastorName">Nome do Pastor</label>
+                                    <input type="text" id="pastorName" name="pastor_name" placeholder="Nome do pastor principal">
+                                </div>
+                                <div class="form-group">
+                                    <label for="churchRole">Função na Igreja</label>
+                                    <input type="text" id="churchRole" name="church_role" placeholder="Ex: Membro, Diácono, Líder, Professor">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>🙏 Vida Espiritual</h3>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="baptized" name="baptized">
+                                <label for="baptized">Sou batizado</label>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="baptismDate">Data do Batismo</label>
+                                    <input type="date" id="baptismDate" name="baptism_date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmationDate">Data da Confirmação</label>
+                                    <input type="date" id="confirmationDate" name="confirmation_date">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="conversionDate">Data da Conversão</label>
+                                    <input type="date" id="conversionDate" name="conversion_date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ministry">Ministério</label>
+                                    <input type="text" id="ministry" name="ministry" placeholder="Ex: Louvor, Jovens, Crianças, Evangelismo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>📖 Estudo Bíblico</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bibleVersion">Versão da Bíblia Preferida</label>
+                                    <select id="bibleVersion" name="bible_version">
+                                        <option value="NVI">NVI - Nova Versão Internacional</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="spiritualGifts">Dons Espirituais</label>
+                                    <input type="text" id="spiritualGifts" name="spiritual_gifts" placeholder="Ex: Ensino, Liderança, Hospitalidade">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="favoriteVerse">Versículo Favorito</label>
+                                <input type="text" id="favoriteVerse" name="favorite_verse" placeholder="Ex: Filipenses 4:13">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>💭 Testemunho e Oração</h3>
+                            <div class="form-group">
+                                <label for="conversionStory">História da Conversão</label>
+                                <textarea id="conversionStory" name="conversion_story" placeholder="Conte como foi sua experiência de conversão..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimony">Testemunho</label>
+                                <textarea id="testimony" name="testimony" placeholder="Compartilhe seu testemunho de fé..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="prayerRequests">Pedidos de Oração</label>
+                                <textarea id="prayerRequests" name="prayer_requests" placeholder="Compartilhe seus pedidos de oração (opcional - visível apenas para você)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetReligiousForm()">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn">
+                                Salvar Dados Religiosos
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Aba Fotos -->
+                <div id="photos-tab" class="tab-panel">
+                    <div id="photosAlert"></div>
+                    
+                    <div class="form-section">
+                        <h3>📷 Fotos do Perfil</h3>
+                        
+                        <div class="photo-upload-section">
+                            <h4>📤 Adicionar Nova Foto</h4>
+                            <p>Cole a URL de uma foto ou use um serviço de hospedagem de imagens</p>
+                            <div class="form-group">
+                                <input type="url" id="photoUrl" placeholder="https://exemplo.com/minha-foto.jpg">
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="isPrimary">
+                                <label for="isPrimary">Definir como foto principal</label>
+                            </div>
+                            <button type="button" class="btn" onclick="addPhoto()">
+                                Adicionar Foto
+                            </button>
+                        </div>
+
+                        <div id="photoGallery" class="photo-gallery">
+                            <!-- Fotos serão carregadas aqui -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Privacidade -->
+                <div id="privacy-tab" class="tab-panel">
+                    <div id="privacyAlert"></div>
+                    
+                    <form id="privacyForm">
+                        <div class="form-section">
+                            <h3>🔒 Configurações de Privacidade</h3>
+                            
+                            <div class="form-group">
+                                <label for="profileVisibility">Visibilidade do Perfil</label>
+                                <select id="profileVisibility" name="profile_visibility">
+                                    <option value="public">Público - Visível para todos os IntelliMen</option>
+                                    <option value="partners_only">Apenas Parceiros - Visível apenas para parceiros e amigos</option>
+                                    <option value="private">Privado - Apenas para você</option>
+                                </select>
+                                <small>Controla quem pode ver seu perfil completo</small>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="allowContact" name="allow_contact">
+                                <label for="allowContact">Permitir que outros IntelliMen entrem em contato comigo</label>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="shareProgress" name="share_progress">
+                                <label for="shareProgress">Compartilhar meu progresso nos desafios</label>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="receiveNotifications" name="receive_notifications">
+                                <label for="receiveNotifications">Receber notificações por email</label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetPrivacyForm()">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn">
+                                Salvar Configurações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados globais
+        let userProfile = {};
+        let profileOptions = {};
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileOptions();
+            loadUserProfile();
+            setupFormHandlers();
+        });
+
+        // Carregar opções para os formulários
+        async function loadProfileOptions() {
+            try {
+                const response = await fetch('/api/profile/options');
+                if (response.ok) {
+                    profileOptions = await response.json();
+                    populateSelectOptions();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar opções:', error);
+            }
+        }
+
+        // Popular selects com opções
+        function populateSelectOptions() {
+            // Estados
+            const stateSelect = document.getElementById('state');
+            profileOptions.brazilian_states?.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+
+            // Denominações
+            const denominationSelect = document.getElementById('denomination');
+            profileOptions.denominations?.forEach(denomination => {
+                const option = document.createElement('option');
+                option.value = denomination;
+                option.textContent = denomination;
+                denominationSelect.appendChild(option);
+            });
+
+            // Versões da Bíblia
+            const bibleVersionSelect = document.getElementById('bibleVersion');
+            bibleVersionSelect.innerHTML = '';
+            profileOptions.bible_versions?.forEach(version => {
+                const option = document.createElement('option');
+                option.value = version.split(' - ')[0];
+                option.textContent = version;
+                bibleVersionSelect.appendChild(option);
+            });
+        }
+
+        // Carregar perfil do usuário
+        async function loadUserProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                const response = await fetch('/api/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    userProfile = await response.json();
+                    populateProfile();
+                    calculateProfileCompleteness();
+                } else if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar perfil:', error);
+                showAlert('error', 'Erro ao carregar perfil. Tente novamente.');
+            }
+        }
+
+        // Popular dados do perfil
+        function populateProfile() {
+            // Cabeçalho
+            document.getElementById('userName').textContent = userProfile.name || 'Usuário';
+            document.getElementById('userEmail').textContent = userProfile.email || '';
+            
+            // Avatar
+            const avatarElement = document.getElementById('userAvatar');
+            if (userProfile.avatar_url) {
+                avatarElement.innerHTML = `<img src="${userProfile.avatar_url}" class="avatar" alt="Avatar">`;
+            } else {
+                const initials = (userProfile.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+                avatarElement.textContent = initials;
+            }
+
+            // Data de criação
+            if (userProfile.created_at) {
+                const year = new Date(userProfile.created_at).getFullYear();
+                document.getElementById('memberSince').textContent = year;
+            }
+
+            // Formulário pessoal
+            document.getElementById('fullName').value = userProfile.full_name || '';
+            document.getElementById('birthDate').value = userProfile.birth_date || '';
+            document.getElementById('phone').value = userProfile.phone || '';
+            document.getElementById('address').value = userProfile.address || '';
+            document.getElementById('city').value = userProfile.city || '';
+            document.getElementById('state').value = userProfile.state || '';
+            document.getElementById('postalCode').value = userProfile.postal_code || '';
+            document.getElementById('maritalStatus').value = userProfile.marital_status || '';
+            document.getElementById('spouseName').value = userProfile.spouse_name || '';
+            document.getElementById('childrenCount').value = userProfile.children_count || 0;
+            document.getElementById('profession').value = userProfile.profession || '';
+            document.getElementById('educationLevel').value = userProfile.education_level || '';
+            document.getElementById('aboutMe').value = userProfile.about_me || '';
+
+            // Formulário religioso
+            document.getElementById('denomination').value = userProfile.denomination || '';
+            document.getElementById('churchName').value = userProfile.church_name || '';
+            document.getElementById('churchAddress').value = userProfile.church_address || '';
+            document.getElementById('pastorName').value = userProfile.pastor_name || '';
+            document.getElementById('churchRole').value = userProfile.church_role || '';
+            document.getElementById('baptized').checked = userProfile.baptized || false;
+            document.getElementById('baptismDate').value = userProfile.baptism_date || '';
+            document.getElementById('confirmationDate').value = userProfile.confirmation_date || '';
+            document.getElementById('conversionDate').value = userProfile.conversion_date || '';
+            document.getElementById('ministry').value = userProfile.ministry || '';
+            document.getElementById('bibleVersion').value = userProfile.bible_version || 'NVI';
+            document.getElementById('spiritualGifts').value = userProfile.spiritual_gifts || '';
+            document.getElementById('favoriteVerse').value = userProfile.favorite_verse || '';
+            document.getElementById('conversionStory').value = userProfile.conversion_story || '';
+            document.getElementById('testimony').value = userProfile.testimony || '';
+            document.getElementById('prayerRequests').value = userProfile.prayer_requests || '';
+
+            // Formulário de privacidade
+            document.getElementById('profileVisibility').value = userProfile.profile_visibility || 'public';
+            document.getElementById('allowContact').checked = userProfile.allow_contact !== false;
+            document.getElementById('shareProgress').checked = userProfile.share_progress !== false;
+            document.getElementById('receiveNotifications').checked = userProfile.receive_notifications !== false;
+
+            // Carregar fotos
+            loadPhotos();
+        }
+
+        // Carregar fotos do perfil
+        function loadPhotos() {
+            const photoGallery = document.getElementById('photoGallery');
+            photoGallery.innerHTML = '';
+
+            if (userProfile.photos && userProfile.photos.length > 0) {
+                userProfile.photos.forEach((photo, index) => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'photo-item';
+                    photoItem.innerHTML = `
+                        <img src="${photo.photo_url}" alt="Foto do perfil">
+                        ${photo.is_primary ? '<div class="primary-badge">Principal</div>' : ''}
+                        <button class="remove-photo" onclick="removePhoto(${index})" title="Remover foto">×</button>
+                    `;
+                    photoGallery.appendChild(photoItem);
+                });
+            } else {
+                photoGallery.innerHTML = '<p style="text-align: center; color: #666; grid-column: 1/-1;">Nenhuma foto adicionada ainda.</p>';
+            }
+        }
+
+        // Calcular completude do perfil
+        function calculateProfileCompleteness() {
+            const fields = [
+                'full_name', 'birth_date', 'phone', 'address', 'city', 'state',
+                'marital_status', 'profession', 'education_level', 'about_me',
+                'denomination', 'church_name', 'pastor_name', 'bible_version'
+            ];
+
+            let completedFields = 0;
+            fields.forEach(field => {
+                if (userProfile[field] && userProfile[field].toString().trim() !== '') {
+                    completedFields++;
+                }
+            });
+
+            const percentage = Math.round((completedFields / fields.length) * 100);
+            document.getElementById('profileComplete').textContent = `${percentage}%`;
+            document.getElementById('profileProgress').style.width = `${percentage}%`;
+
+            // Buscar progresso dos desafios
+            loadChallengeProgress();
+        }
+
+        // Carregar progresso dos desafios
+        async function loadChallengeProgress() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/progress', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const progress = await response.json();
+                    const completed = progress.filter(p => p.completed).length;
+                    document.getElementById('completedChallenges').textContent = completed;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+            }
+        }
+
+        // Configurar manipuladores de formulário
+        function setupFormHandlers() {
+            // Formulário pessoal
+            document.getElementById('personalForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await savePersonalData();
+            });
+
+            // Formulário religioso
+            document.getElementById('religiousForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await saveReligiousData();
+            });
+
+            // Formulário de privacidade
+            document.getElementById('privacyForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await savePrivacySettings();
+            });
+
+            // Máscara para telefone
+            document.getElementById('phone').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 11) {
+                    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                    if (value.length < 14) {
+                        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                    }
+                }
+                e.target.value = value;
+            });
+
+            // Máscara para CEP
+            document.getElementById('postalCode').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 8) {
+                    value = value.replace(/(\d{5})(\d{3})/, '$1-$2');
+                }
+                e.target.value = value;
+            });
+        }
+
+        // Salvar dados pessoais
+        async function savePersonalData() {
+            try {
+                const formData = new FormData(document.getElementById('personalForm'));
+                const data = Object.fromEntries(formData.entries());
+
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/profile/personal', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showAlert('personalAlert', 'success', 'Dados pessoais salvos com sucesso!');
+                    setTimeout(() => {
+                        loadUserProfile();
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    showAlert('personalAlert', 'error', error.error || 'Erro ao salvar dados pessoais');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar dados pessoais:', error);
+                showAlert('personalAlert', 'error', 'Erro ao salvar dados pessoais. Tente novamente.');
+            }
+        }
+
+        // Salvar dados religiosos
+        async function saveReligiousData() {
+            try {
+                const formData = new FormData(document.getElementById('religiousForm'));
+                const data = Object.fromEntries(formData.entries());
+
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/profile/religious', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showAlert('religiousAlert', 'success', 'Dados religiosos salvos com sucesso!');
+                    setTimeout(() => {
+                        loadUserProfile();
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    showAlert('religiousAlert', 'error', error.error || 'Erro ao salvar dados religiosos');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar dados religiosos:', error);
+                showAlert('religiousAlert', 'error', 'Erro ao salvar dados religiosos. Tente novamente.');
+            }
+        }
+
+        // Salvar configurações de privacidade
+        async function savePrivacySettings() {
+            try {
+                const formData = new FormData(document.getElementById('privacyForm'));
+                const data = Object.fromEntries(formData.entries());
+
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/profile/privacy', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showAlert('privacyAlert', 'success', 'Configurações de privacidade salvas com sucesso!');
+                    setTimeout(() => {
+                        loadUserProfile();
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    showAlert('privacyAlert', 'error', error.error || 'Erro ao salvar configurações');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar configurações:', error);
+                showAlert('privacyAlert', 'error', 'Erro ao salvar configurações. Tente novamente.');
+            }
+        }
+
+        // Adicionar foto
+        async function addPhoto() {
+            const photoUrl = document.getElementById('photoUrl').value.trim();
+            const isPrimary = document.getElementById('isPrimary').checked;
+
+            if (!photoUrl) {
+                showAlert('photosAlert', 'error', 'Por favor, insira a URL da foto');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/profile/photo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        photo_url: photoUrl,
+                        is_primary: isPrimary
+                    })
+                });
+
+                if (response.ok) {
+                    showAlert('photosAlert', 'success', 'Foto adicionada com sucesso!');
+                    document.getElementById('photoUrl').value = '';
+                    document.getElementById('isPrimary').checked = false;
+                    setTimeout(() => {
+                        loadUserProfile();
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    showAlert('photosAlert', 'error', error.error || 'Erro ao adicionar foto');
+                }
+            } catch (error) {
+                console.error('Erro ao adicionar foto:', error);
+                showAlert('photosAlert', 'error', 'Erro ao adicionar foto. Tente novamente.');
+            }
+        }
+
+        // Remover foto
+        async function removePhoto(photoIndex) {
+            if (!confirm('Tem certeza que deseja remover esta foto?')) {
+                return;
+            }
+
+            try {
+                const photo = userProfile.photos[photoIndex];
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/profile/photo/${photo.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    showAlert('photosAlert', 'success', 'Foto removida com sucesso!');
+                    setTimeout(() => {
+                        loadUserProfile();
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    showAlert('photosAlert', 'error', error.error || 'Erro ao remover foto');
+                }
+            } catch (error) {
+                console.error('Erro ao remover foto:', error);
+                showAlert('photosAlert', 'error', 'Erro ao remover foto. Tente novamente.');
+            }
+        }
+
+        // Trocar aba
+        function showTab(tabName) {
+            // Remover classe active de todas as abas
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+            // Ativar aba selecionada
+            document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Resetar formulário pessoal
+        function resetPersonalForm() {
+            populateProfile();
+            clearAlert('personalAlert');
+        }
+
+        // Resetar formulário religioso
+        function resetReligiousForm() {
+            populateProfile();
+            clearAlert('religiousAlert');
+        }
+
+        // Resetar formulário de privacidade
+        function resetPrivacyForm() {
+            populateProfile();
+            clearAlert('privacyAlert');
+        }
+
+        // Mostrar alerta
+        function showAlert(containerId, type, message) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            
+            // Auto-remover após 5 segundos se for sucesso
+            if (type === 'success') {
+                setTimeout(() => {
+                    clearAlert(containerId);
+                }, 5000);
+            }
+        }
+
+        // Limpar alerta
+        function clearAlert(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // Verificar autenticação
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
