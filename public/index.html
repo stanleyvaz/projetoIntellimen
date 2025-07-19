@@ -34,24 +34,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 50%);
-            z-index: 1;
+            border-radius: 20px;
         }
 
         .header-content {
-            position: relative;
-            z-index: 2;
             text-align: center;
             max-width: 800px;
             padding: 0 20px;
@@ -94,15 +80,7 @@
             font-size: 1.2rem;
             opacity: 0.95;
             font-weight: 300;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
             margin-bottom: 10px;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: #ddd;
-            font-style: italic;
-            margin-top: 5px;
         }
 
         .auth-section {
@@ -155,7 +133,7 @@
             color: #333;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e0e0e0;
@@ -164,7 +142,7 @@
             transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus {
             outline: none;
             border-color: #000;
         }
@@ -190,35 +168,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .btn-secondary {
-            background: white;
-            color: #000;
-            border: 2px solid #000;
-            width: auto;
-            min-width: 100px;
-            font-size: 0.9rem;
-            padding: 10px 15px;
-            white-space: nowrap;
-        }
-
-        .btn-secondary:hover {
-            background: #f0f0f0;
-        }
-
-        .manifesto-btn {
-            background: #333;
-            color: white;
-            border: 2px solid #333;
-            width: auto;
-            padding: 10px 25px;
-            margin-top: 20px;
-        }
-
-        .manifesto-btn:hover {
-            background: #555;
-            border-color: #555;
-        }
-
         .dashboard {
             display: none;
             background: white;
@@ -237,283 +186,20 @@
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .user-info .buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .user-info .buttons .btn {
-            width: auto;
-            min-width: 100px;
-            font-size: 0.9rem;
-            padding: 10px 15px;
-            white-space: nowrap;
+            text-align: center;
         }
 
         .user-info h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0;
-        }
-
-        .user-info .logo-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 10px;
-            border-radius: 3px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #000000 0%, #333333 100%);
-            transition: width 0.3s ease;
-        }
-
-        .challenges-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .challenge-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .challenge-card:hover {
-            border-color: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .challenge-card.completed {
-            border-color: #000;
-            background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
-        }
-
-        .challenge-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .challenge-number {
-            background: #000;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-weight: bold;
-        }
-
-        .challenge-status {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .challenge-status.pending {
-            background: #f0f0f0;
-            color: #666;
-        }
-
-        .challenge-status.completed {
-            background: #000;
-            color: #fff;
-        }
-
-        .challenge-title {
-            font-size: 1.2rem;
-            font-weight: 600;
             margin-bottom: 10px;
-            color: #333;
         }
 
-        .challenge-description {
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .challenge-links {
-            margin-top: 15px;
-        }
-
-        .challenge-links a {
-            display: inline-block;
-            background: #f0f0f0;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 15px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin: 5px 5px 5px 0;
-            transition: all 0.3s ease;
-        }
-
-        .challenge-links a:hover {
-            background: #000;
-            color: white;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .modal-header h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0;
-        }
-
-        .modal-header .logo-icon {
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .export-btn {
-            background: #000;
-            border: 2px solid #000;
-        }
-
-        .export-btn:hover {
-            background: #333;
-            border-color: #333;
-        }
-
-        .logout-btn {
+        .btn-logout {
             background: #fff;
             color: #000;
             border: 2px solid #000;
-        }
-
-        .logout-btn:hover {
-            background: #f0f0f0;
-        }
-
-        .notes-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .notes-section h4 {
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notes-section h4::before {
-            content: "📝";
-            font-size: 1.1rem;
-        }
-
-        .notes-section textarea {
-            width: 100%;
-            min-height: 120px;
-            resize: vertical;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1rem;
-            line-height: 1.5;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
-
-        .notes-section textarea:focus {
-            border-color: #000;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 0 0 3px rgba(0,0,0,0.1);
-            outline: none;
-        }
-
-        .notes-section textarea::placeholder {
-            color: #999;
-            font-style: italic;
-        }
-
-        .complete-btn {
-            background: #000;
-            margin-top: 15px;
-        }
-
-        .complete-btn:hover {
-            background: #333;
+            margin-top: 20px;
+            width: auto;
+            padding: 10px 20px;
         }
 
         .lema-section {
@@ -537,25 +223,25 @@
             font-size: 1.1rem;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
         }
 
-        .loading::before {
-            content: "⏳";
-            font-size: 2rem;
-            display: block;
-            margin-bottom: 10px;
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
         }
 
         @media (max-width: 768px) {
-            .header {
-                min-height: 150px;
-                padding: 20px 0;
-            }
-            
             .header-brand {
                 font-size: 1.8rem;
             }
@@ -564,52 +250,9 @@
                 font-size: 1rem;
             }
             
-            .header-subtitle {
-                font-size: 0.9rem;
-            }
-            
             .auth-section,
             .dashboard {
                 padding: 20px;
-            }
-            
-            .challenges-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-info {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-            
-            .user-info .buttons {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .user-info .buttons .btn {
-                min-width: 80px;
-                font-size: 0.8rem;
-                padding: 8px 12px;
-            }
-            
-            .modal-content {
-                width: 95%;
-                margin: 10px;
-                max-height: 90vh;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .user-info .buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .user-info .buttons .btn {
-                width: 100%;
-                min-width: auto;
             }
         }
     </style>
@@ -619,37 +262,32 @@
         <div class="header">
             <div class="header-content">
                 <div class="header-logo">
-                    <div class="logo-icon">
-                        IM
-                    </div>
+                    <div class="logo-icon">IM</div>
                     <div class="header-brand">INTELLIMEN</div>
                 </div>
                 <h1>PROJETO INTELLIMEN</h1>
                 <p>53 Desafios Para Homens Inteligentes</p>
-                <div class="header-subtitle">Baseado no livro de Renato Cardoso</div>
-                <button class="btn manifesto-btn" onclick="openManifestoModal()">
-                    📖 Ler o Manifesto
-                </button>
             </div>
         </div>
 
         <!-- Seção de Autenticação -->
         <div class="auth-section" id="authSection">
             <div class="auth-tabs">
-                <button class="auth-tab active" onclick="showAuthForm('login')">Login</button>
-                <button class="auth-tab" onclick="showAuthForm('register')">Cadastro</button>
+                <button class="auth-tab active" id="loginTab">Login</button>
+                <button class="auth-tab" id="registerTab">Cadastro</button>
             </div>
 
             <div class="auth-form active" id="loginForm">
                 <h2>Faça seu Login</h2>
-                <form onsubmit="login(event)">
+                <div id="loginMessages"></div>
+                <form id="actualLoginForm">
                     <div class="form-group">
                         <label for="loginEmail">Email:</label>
-                        <input type="email" id="loginEmail" required>
+                        <input type="email" id="loginEmail" value="joao@email.com" required>
                     </div>
                     <div class="form-group">
                         <label for="loginPassword">Senha:</label>
-                        <input type="password" id="loginPassword" required>
+                        <input type="password" id="loginPassword" value="123456" required>
                     </div>
                     <button type="submit" class="btn">Entrar</button>
                 </form>
@@ -660,7 +298,8 @@
 
             <div class="auth-form" id="registerForm">
                 <h2>Cadastro de Novo IntelliMan</h2>
-                <form onsubmit="register(event)">
+                <div id="registerMessages"></div>
+                <form id="actualRegisterForm">
                     <div class="form-group">
                         <label for="registerName">Nome Completo:</label>
                         <input type="text" id="registerName" required>
@@ -685,27 +324,10 @@
         <!-- Dashboard -->
         <div class="dashboard" id="dashboard">
             <div class="user-info">
-                <div>
-                    <h2>
-                        <div class="logo-icon">IM</div>
-                        Bem-vindo, <span id="userName"></span>!
-                    </h2>
-                    <p>Parceiro Oficial: <span id="partnerName">Não definido</span></p>
-                </div>
-                <div class="buttons">
-                    <button class="btn export-btn" onclick="exportProgress()">📄 Exportar</button>
-                    <button class="btn btn-secondary" onclick="openProfileModal()">👤 Perfil</button>
-                    <button class="btn btn-secondary" onclick="openManifestoModal()">📖 Manifesto</button>
-                    <button class="btn logout-btn" onclick="logout()">🚪 Sair</button>
-                </div>
+                <h2>Bem-vindo, <span id="userName"></span>!</h2>
+                <p>Parceiro Oficial: <span id="partnerName">Não definido</span></p>
+                <button class="btn btn-logout" onclick="logout()">🚪 Sair</button>
             </div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p style="text-align: center; margin-top: 10px;">
-                Progresso: <span id="progressText">0/53</span> desafios concluídos
-            </p>
 
             <div class="lema-section">
                 <h3>🎯 Lema do IntelliMan</h3>
@@ -717,604 +339,90 @@
                 </p>
             </div>
 
-            <div class="challenges-grid" id="challengesGrid">
-                <!-- Desafios serão carregados aqui -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Perfil do Usuário -->
-    <div class="modal" id="profileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>👤 Perfil do Usuário</h2>
-                <button class="close-btn" onclick="closeProfileModal()">&times;</button>
-            </div>
-            <div style="line-height: 1.6;">
-                <h3>📋 Informações Pessoais</h3>
-                <form id="profileForm" onsubmit="updateProfile(event)">
-                    <div class="form-group">
-                        <label for="profileName">Nome Completo:</label>
-                        <input type="text" id="profileName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="profileEmail">Email:</label>
-                        <input type="email" id="profileEmail" required readonly style="background: #f5f5f5;">
-                        <small style="color: #666;">O email não pode ser alterado</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="profilePartner">Parceiro Oficial:</label>
-                        <input type="text" id="profilePartner" placeholder="Nome do seu parceiro oficial">
-                    </div>
-                    <button type="submit" class="btn">💾 Atualizar Dados</button>
-                </form>
-                
-                <hr style="margin: 30px 0;">
-                
-                <h3>📊 Estatísticas do Progresso</h3>
-                <div id="profileStats" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 15px 0;">
-                    <!-- Estatísticas serão carregadas aqui -->
-                </div>
-                
-                <hr style="margin: 30px 0;">
-                
-                <h3>🔒 Segurança</h3>
-                <button class="btn btn-secondary" onclick="changePassword()" style="width: 100%; margin: 10px 0;">
-                    🔑 Alterar Senha
-                </button>
-                
-                <h3 style="margin-top: 30px;">⚠️ Zona de Perigo</h3>
-                <button class="btn" onclick="resetProgress()" style="background: #dc3545; width: 100%; margin: 10px 0;">
-                    🗑️ Resetar Todo o Progresso
-                </button>
-                <small style="color: #666; font-style: italic;">Esta ação não pode ser desfeita!</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Manifesto -->
-    <div class="modal" id="manifestoModal">
-        <div class="modal-content" style="max-width: 800px;">
-            <div class="modal-header">
-                <h2>📜 Manifesto do IntelliMen</h2>
-                <button class="close-btn" onclick="closeManifestoModal()">&times;</button>
-            </div>
-            <div id="manifestoContent" style="max-height: 60vh; overflow-y: auto; line-height: 1.6;">
-                <h3>MANIFESTO</h3>
-                <p>Ser homem antigamente era algo muito simples. Você aprendia duas coisas desde cedo: lutar para se defender e caçar para se alimentar. Quem fazia isso muito bem, se dava muito bem. E levava a garota para casa.</p>
-                
-                <p>Esse era o critério básico quando o pai considerava um rapaz para casar com sua filha. E ela também. Em muitos casos, amor era secundário. Você não ouvia mulheres detalhando uma longa lista de atributos que queriam no futuro marido.</p>
-                
-                <p>A única preocupação era: "Você pode e está pronto para me proteger com a sua vida? Pode me sustentar tão bem quanto ou melhor que o meu pai? Então ponha um anel aqui..." Simples assim.</p>
-                
-                <p><strong>Ser homem no século 21 já é outra história.</strong> O mundo mudou. As mulheres mudaram. E muitos homens ainda estão com a cabeça lá atrás. O resultado está aí para ser assistido em 3D: homens <strong>Deslocados, Despreparados e Desacreditados</strong>.</p>
-                
-                <hr style="margin: 20px 0;">
-                
-                <h3>APRESENTANDO O INTELLIMEN</h3>
-                <p>Você já deve ter sacado que o nome do projeto é uma junção das palavras em inglês <em>intelligent</em> (inteligentes) e <em>men</em> (homens). Escolhemos esse nome porque, além de soar como um super-herói (que todo homem secretamente aspira ser desde criança), ele engloba tudo a que o projeto aspira: <strong>formar homens inteligentes e melhores em tudo</strong>.</p>
-                
-                <p>Formar homens melhores será o nosso lema. Ser homens inteligentes é a nossa missão. Vamos caminhar juntos, aprender uns com os outros. Mas espere <strong>DESAFIOS</strong>. Nós vamos desafiá-lo a ser melhor em todas as áreas de sua vida.</p>
-                
-                <p>E para ser um dos IntelliMen, você nunca poderá fugir dos desafios nem deixar de cumpri-los. E acima de tudo, precisará do ingrediente fundamental para aprender: <strong>humildade</strong>.</p>
-                
-                <blockquote style="background: #f5f5f5; padding: 15px; border-left: 4px solid #333; margin: 20px 0; font-style: italic;">
-                    "O homem não prevalece pela força." - 1 Samuel 2.9
-                </blockquote>
-                
-                <p>É preciso mais que músculos para ser homem. <strong>Caráter, inteligência e fé são muito mais importantes.</strong></p>
-                
-                <hr style="margin: 20px 0;">
-                
-                <h3>PERGUNTAS BÁSICAS</h3>
-                
-                <h4>O QUE É O INTELLIMEN?</h4>
-                <p>É um grupo exclusivamente para homens que querem ser melhores em todas as áreas de sua vida. Homens ajudando homens, compartilhando o que é bom, trabalhando duro para melhorar a cada dia — e se divertindo enquanto o fazem.</p>
-                
-                <h4>QUEM PODE PARTICIPAR?</h4>
-                <p>Homens de qualquer idade que estejam dispostos a se submeterem ao nosso Manifesto e às Condições de Participação.</p>
-                
-                <h4>COMO POSSO PARTICIPAR?</h4>
-                <p>Ler todo este Manifesto com atenção, entender as condições, comprometer-se com o projeto, e cumprir os desafios semanais apresentados aqui no IntelliMen.</p>
-                
-                <h4>QUANDO COMEÇA?</h4>
-                <p>Agora, já. Se você está comprometido em se tornar um homem melhor, você pode iniciar o projeto imediatamente. Serão <strong>53 desafios, um por semana</strong>. Será um ano de comprometimento com você mesmo para transformar sua vida.</p>
-                
-                <hr style="margin: 20px 0;">
-                
-                <h3>🎯 LEMA DO INTELLIMAN</h3>
-                <div style="background: linear-gradient(135deg, #000000 0%, #333333 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
-                    <p style="font-size: 1.1rem; margin: 0;"><em>"Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. Conhece o seu valor diante dos homens e de Deus. Ama a disciplina, o caráter e o bem. Sua missão é inspirar outros a se tornarem IntelliMen."</em></p>
-                </div>
-                
-                <hr style="margin: 20px 0;">
-                
-                <h3>CONDIÇÕES DE PARTICIPAÇÃO</h3>
-                <ol style="line-height: 1.6; margin-left: 20px;">
-                    <li><strong>Compromisso Total:</strong> Você deve estar disposto a fazer todos os 53 desafios, sem exceção.</li>
-                    <li><strong>Parceiro Oficial:</strong> Você deve encontrar um parceiro para fazer o projeto junto.</li>
-                    <li><strong>Transparência:</strong> Compartilhar seu progresso e aprendizados.</li>
-                    <li><strong>Persistência:</strong> Não desistir, mesmo quando os desafios ficarem difíceis.</li>
-                    <li><strong>Integridade:</strong> Ser honesto consigo mesmo e com seu progresso.</li>
-                </ol>
-                
-                <p style="text-align: center; margin-top: 30px;"><strong>Está pronto para se tornar um IntelliMan?</strong></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Desafios -->
-    <div class="modal" id="challengeModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle"></h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div id="modalContent"></div>
-            <div class="notes-section">
-                <h4>Suas Anotações Pessoais</h4>
-                <textarea id="challengeNotes" placeholder="✍️ Compartilhe suas reflexões, aprendizados e experiências com este desafio...
-
-💡 Dicas:
-• Como você se sentiu fazendo este desafio?
-• Quais dificuldades encontrou?
-• O que aprendeu sobre si mesmo?
-• Como vai aplicar isso no dia a dia?
-• Que decisões tomou em decorrência deste desafio?"></textarea>
-                <button class="btn complete-btn" onclick="completeChallenge()">Salvar e Marcar como Concluído</button>
+            <div style="text-align: center; padding: 40px;">
+                <h2>🎉 LOGIN REALIZADO COM SUCESSO!</h2>
+                <p>O sistema está funcionando perfeitamente.</p>
+                <p>Em breve, os 53 desafios estarão disponíveis aqui.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuração da API - AUTO DETECTA AMBIENTE
+        console.log('🚀 IntelliMen iniciando...');
+        
+        // Configuração da API
         const API_BASE_URL = window.location.origin;
+        console.log('API Base URL:', API_BASE_URL);
         
         // Variáveis globais
         let currentUser = null;
 
-        // Dados completos dos 53 desafios do IntelliMen
-        const challenges = [
-            {
-                id: 1,
-                title: "Encontrar um Parceiro Oficial",
-                description: "Encontrar um parceiro para fazer o projeto com você e tornar pública sua participação.",
-                details: "Você vai convidar alguém para começar o Projeto IntelliMen com você. Pode ser um amigo, irmão, colega no trabalho ou na igreja, primo, seu pai, seu filho, seu pastor etc. Escolha alguém legal, que vai levar o projeto a sério e não deixá-lo na mão no meio do caminho.",
-                links: [
-                    { text: "🌐 Página oficial do IntelliMen", url: "https://facebook.com/intellimen" },
-                    { text: "🐦 Twitter do IntelliMen", url: "https://twitter.com/intellimen27" }
-                ]
-            },
-            {
-                id: 2,
-                title: "Identificar Três Coisas para Melhorar",
-                description: "Identificar três coisas que você precisa melhorar sobre si mesmo com urgência.",
-                details: "Todos nós temos que melhorar em muitas coisas. Mas não podemos fazer tudo ao mesmo tempo. Por isso você deve começar com três áreas de sua vida onde precisa melhorar com mais urgência. Pense em coisas que farão uma grande diferença na sua vida, o mais rápido possível."
-            },
-            {
-                id: 3,
-                title: "Descobrir Suas Qualidades",
-                description: "Descobrir as suas qualidades principais.",
-                details: "Sua tarefa neste desafio será escrever todas as suas qualidades como pessoa. No desafio anterior, buscamos onde precisamos melhorar, mas neste desafio vamos focar nas qualidades que já temos, onde já somos bons e competentes."
-            },
-            {
-                id: 4,
-                title: "Tempo com Familiar",
-                description: "Reservar tempo com um familiar fazendo algo de que ele goste.",
-                details: "IntelliMen são voltados para suas famílias. Você vai tirar um tempo para fazer algo com ele ou por ele, algo de que ele goste. Pode ser sua esposa, sua mãe, seu pai, irmão, avô, irmã, filho — enfim, uma pessoa que vá apreciar seu gesto e tempo."
-            },
-            {
-                id: 5,
-                title: "Série 'Seja Homem!'",
-                description: "Assistir à série de vídeos 'Seja Homem!' e refletir sobre seu papel como homem.",
-                details: "Você vai assistir à série de cinco vídeos sobre como ser homem nos dias de hoje. Cada vídeo deverá ser acompanhado de anotações sobre o que você aprendeu e as decisões que tomará.",
-                links: [
-                    { text: "🎥 Assistir à série Seja Homem!", url: "http://rna.to/UtVFqR" }
-                ]
-            },
-            {
-                id: 6,
-                title: "Revisão e Divulgação",
-                description: "Rever os resultados dos primeiros 5 desafios e falar do projeto com alguém.",
-                details: "Passado um mês do início do Projeto, é hora de uma revisão. Você vai rever o que fez, avaliar os resultados e compartilhar com alguém o que tem sido bom para você no IntelliMen."
-            },
-            {
-                id: 7,
-                title: "Definir Objetivos Inteligentes",
-                description: "Aprender a definir objetivos inteligentemente e colocar em prática.",
-                details: "Você vai aprender sobre objetivos TRACQ (Tem prazo, Relevante, Alcançável, Claro e específico, Quantificado) e definir um objetivo que tenha essas cinco características."
-            },
-            {
-                id: 8,
-                title: "Encontrar e Dominar",
-                description: "Encontrar algo que o esteja dominando e passar a dominá-lo.",
-                details: "O homem foi criado para dominar e não ser dominado por nada. Você vai identificar as coisas que têm lhe dominado e desenvolver estratégias para dominá-las.",
-                links: [
-                    { text: "🎥 O desafio de ser homem", url: "http://rna.to/1n6xZR7" }
-                ]
-            },
-            {
-                id: 9,
-                title: "Atitude Ousada e Corajosa",
-                description: "Tomar uma atitude ousada e corajosa por uma boa causa.",
-                details: "Você vai procurar algo corajoso e ousado para fazer por uma boa causa. Identifique uma boa causa e pense em algo ousado que você pode fazer por ela.",
-                links: [
-                    { text: "🎥 Men stealing meat from lions", url: "https://www.youtube.com/watch?v=QDubMeNlSxc" }
-                ]
-            },
-            {
-                id: 10,
-                title: "Despertar a Raiva Inteligente",
-                description: "Despertar sua raiva contra algo errado e usá-la inteligentemente.",
-                details: "Você vai identificar situações na SUA VIDA que deveriam lhe provocar raiva, mas você tem sido passivo diante delas. Desperte sua raiva e use-a de forma inteligente.",
-                links: [
-                    { text: "📖 A origem da raiva", url: "http://rna.to/1hQTrMy" }
-                ]
-            },
-            {
-                id: 11,
-                title: "Disciplina de Exercícios",
-                description: "Entrar na disciplina de fazer exercício físico pelo menos três vezes por semana.",
-                details: "O homem inteligente deve ser a imagem da disciplina. Você vai adotar a disciplina de se exercitar regularmente - no mínimo três vezes por semana, uma hora por sessão."
-            },
-            {
-                id: 12,
-                title: "Vigiar os Pensamentos",
-                description: "Vigiar seus pensamentos e remover todos os que não lhe fazem bem.",
-                details: "Você vai vasculhar sua mente para identificar pensamentos ruins e ficar atento à sua voz interior. Ao identificar algo negativo, imediatamente repreenda-o e fale algo positivo.",
-                links: [
-                    { text: "🎥 Como superar os maus pensamentos", url: "http://rna.to/1oeCnCE" }
-                ]
-            },
-            {
-                id: 13,
-                title: "Ser Mais Cavalheiro",
-                description: "Aprender a ser mais cavalheiro e menos cavalo.",
-                details: "Você vai buscar praticar pequenos gestos e hábitos de um cavalheiro, tratando bem o seu semelhante, especialmente as mulheres, sem perder a masculinidade."
-            },
-            {
-                id: 14,
-                title: "Disciplina Financeira",
-                description: "Disciplinar-se em guardar uma quantidade de dinheiro regularmente.",
-                details: "Você vai criar uma disciplina financeira de não gastar todo seu dinheiro, sempre. Considere o princípio 10-20-70: devolva 10% para Deus, guarde 20% e viva com 70% da sua renda."
-            },
-            {
-                id: 15,
-                title: "Disciplina do Todo-Poderoso",
-                description: "Reconhecer a disciplina do Todo-Poderoso e aceitá-la.",
-                details: "Você vai reconhecer a disciplina de Deus na sua vida. Se Ele disciplina a quantos ama, você deve ser sensível a essa disciplina e aceitá-la para seu crescimento."
-            },
-            {
-                id: 16,
-                title: "Pacto com os Olhos",
-                description: "Fazer um pacto com seus olhos de não cobiçar nenhuma mulher.",
-                details: "Você vai treinar os seus olhos a não olhar para mulheres com desejo ou cobiça. Quando perceber que olhou, desvie o olhar imediatamente."
-            },
-            {
-                id: 17,
-                title: "Revisão dos Desafios",
-                description: "Rever todos os desafios até aqui e se atualizar no projeto.",
-                details: "Foram 16 desafios até aqui. Você vai fazer uma revisão completa, lembrando dos aprendizados e se atualizando nos desafios que não completou satisfatoriamente."
-            },
-            {
-                id: 18,
-                title: "Ensinar uma Habilidade",
-                description: "Ensinar uma habilidade ou outro ensinamento útil ao seu parceiro.",
-                details: "Você vai ensinar ao seu Parceiro Oficial algo que você faz bem e pratica. Pode ser qualquer habilidade ou conhecimento prático que seja útil a ele."
-            },
-            {
-                id: 19,
-                title: "Caminhada do Amor",
-                description: "Convidar sua esposa/noiva/namorada para fazer a Caminhada do Amor.",
-                details: "Você vai convidar sua amada para fazer a Caminhada do Amor. Se você é solteiro, pode convidar alguém que tenha em vista ou motivar um casal a fazer.",
-                links: [
-                    { text: "💕 Página oficial da Caminhada do Amor", url: "http://rna.to/1mI1s2e" },
-                    { text: "😄 Humor: Precisamos conversar", url: "http://rna.to/1pnsd2l" }
-                ]
-            },
-            {
-                id: 20,
-                title: "Área de Excelência",
-                description: "Descobrir sua área de excelência e desenvolvê-la.",
-                details: "Você vai identificar sua área de excelência e começar a fazer mais para desenvolvê-la. Todo mundo pode ser excelente em pelo menos uma coisa."
-            },
-            {
-                id: 21,
-                title: "Começar como o Rei Davi",
-                description: "Começar todos os dias desta semana como o rei Davi.",
-                details: "Você vai se programar para passar alguns minutos diante de Deus em oração ao começar o dia, seguindo o exemplo do rei Davi."
-            },
-            {
-                id: 22,
-                title: "Eliminar Mau Hábito",
-                description: "Identificar um mau hábito e eliminá-lo.",
-                details: "Você vai identificar pelo menos um mau hábito e eliminá-lo. Forme hábitos bons e sua vida será boa. Hábitos ruins a destruirão.",
-                links: [
-                    { text: "📖 Sendo mais esperto que seu hábito", url: "http://rna.to/1rBI7l3" },
-                    { text: "📖 Quebrando hábitos: habilitadores e acionadores", url: "http://rna.to/1pLU1ek" }
-                ]
-            },
-            {
-                id: 23,
-                title: "Adotar Bom Hábito",
-                description: "Adotar um novo bom hábito.",
-                details: "Você vai definir um bom hábito que lhe trará bons resultados e desenvolvê-lo até que se torne natural. Normalmente demora de 21 a 40 dias para desenvolver um bom hábito."
-            },
-            {
-                id: 24,
-                title: "Aprender 'Sim' e 'Não'",
-                description: "Aprender a dizer 'sim' e 'não' mais corajosamente.",
-                details: "Você vai prestar mais atenção aos seus 'sins' e 'nãos', especialmente os mais importantes. Aprenda a usá-los corretamente para ter melhores resultados."
-            },
-            {
-                id: 25,
-                title: "Desenvolver Maturidade",
-                description: "Identificar imaturidade e desenvolver a maturidade.",
-                details: "Você vai avaliar o seu nível de maturidade e ver onde precisa desenvolvê-la mais. Ser maduro é estar bem ajustado à sua época e situação."
-            },
-            {
-                id: 26,
-                title: "Revisão e Divulgação 2",
-                description: "Rever todos os desafios até aqui, se atualizar no projeto e divulgar o IntelliMen.",
-                details: "Chegou outro momento de reflexão. Você vai revisar seu desempenho desde o desafio 18 e divulgar o projeto de alguma forma extra.",
-                links: [
-                    { text: "📖 Onde comprar o livro IntelliMen", url: "https://arcacenter.com.br/livrointellimen" }
-                ]
-            },
-            {
-                id: 27,
-                title: "Terminar Projeto Abandonado",
-                description: "Terminar um projeto que abandonou.",
-                details: "Você vai identificar um projeto, ideia, tarefa ou propósito que tenha abandonado e dar continuidade até terminá-lo. Homens inteligentes terminam o que começam."
-            },
-            {
-                id: 28,
-                title: "Resolver Problema Interessante",
-                description: "Resolver um problema interessante — seu ou de alguém.",
-                details: "Você vai encontrar um problema interessante que você pode resolver e que vale a pena resolver. Homens são solucionadores de problemas."
-            },
-            {
-                id: 29,
-                title: "Ler Livro Edificante",
-                description: "Ler um livro edificante nos próximos 30 dias.",
-                details: "Você vai escolher e ler um livro edificante dentro de 30 dias. Sabedoria e conhecimento valem mais que músculos.",
-                links: [
-                    { text: "📚 Loja de livros recomendados", url: "http://arcacenter.com.br" },
-                    { text: "📞 Televendas", url: "tel:+552124610060" }
-                ]
-            },
-            {
-                id: 30,
-                title: "Usar Negatividade como Combustível",
-                description: "Usar a negatividade dos outros a seu respeito como combustível para conseguir o que quer.",
-                details: "Você vai identificar algum sonho que foi sufocado pela negatividade dos outros e usar essa negatividade como energia para persegui-lo.",
-                links: [
-                    { text: "🎬 História real de Carl Brashear", url: "https://pt.wikipedia.org/wiki/Homens_de_Honra" }
-                ]
-            },
-            {
-                id: 31,
-                title: "Peso Saudável",
-                description: "Identificar seu peso saudável e ajustar sua alimentação e atividade física.",
-                details: "Você vai descobrir como está o seu peso e massa corporal e, se necessário, fazer ajustes na alimentação e exercícios.",
-                links: [
-                    { text: "🧮 Calculadora de IMC", url: "http://rna.to/SPRMen" }
-                ]
-            },
-            {
-                id: 32,
-                title: "Equilibrar Emoções",
-                description: "Emotivo demais ou de menos? Confronte e equilibre suas emoções.",
-                details: "Você vai confrontar seus hábitos emocionais, identificar fraquezas e lidar com eles para alcançar o equilíbrio emocional."
-            },
-            {
-                id: 33,
-                title: "Ser Pontual",
-                description: "Ser pontual em todos os seus compromissos desta semana (e depois, sempre).",
-                details: "Você vai observar e se programar para não fazer nada atrasado. Pontualidade é uma das características das pessoas de sucesso."
-            },
-            {
-                id: 34,
-                title: "Dinheiro Extra Criativo",
-                description: "Fazer um dinheiro extra de forma criativa.",
-                details: "Você vai fazer um dinheiro extra usando sua criatividade para desenvolver suas habilidades empreendedoras.",
-                links: [
-                    { text: "😄 O que mudou entre 1990 e hoje", url: "http://rna.to/1oTJ7qW" }
-                ]
-            },
-            {
-                id: 35,
-                title: "Verdades sobre o Tempo",
-                description: "Entender as verdades sobre o tempo e aprender a respeitá-lo.",
-                details: "Você vai meditar sobre textos importantes sobre o tempo e assistir a um vídeo que mudará sua perspectiva sobre como usar o tempo.",
-                links: [
-                    { text: "🎥 Coisas que você não sabia sobre o tempo", url: "http://rna.to/1n7mgle" }
-                ]
-            },
-            {
-                id: 36,
-                title: "Surpresa para a Mulher Amada",
-                description: "Fazer uma surpresa agradável para a mulher que você ama.",
-                details: "Você vai planejar e fazer uma surpresa agradável para a mulher especial em sua vida, seja esposa, mãe, irmã, filha ou namorada."
-            },
-            {
-                id: 37,
-                title: "Fazer o Certo Sem Vontade",
-                description: "Aprender a fazer o que é certo com ou sem vontade.",
-                details: "Você vai desenvolver a habilidade de fazer o que é certo mesmo quando não tem vontade. Sentir vontade é opcional para fazer o que é certo.",
-                links: [
-                    { text: "🎥 Princípio dos 5 minutos", url: "http://rna.to/1ogQho1" }
-                ]
-            },
-            {
-                id: 38,
-                title: "Jejum de Daniel",
-                description: "Fazer o Jejum de Daniel por 21 dias.",
-                details: "Você vai fazer o Jejum de Daniel - um desafio de se desconectar do bombardeio de informações por 21 dias para focar no fortalecimento espiritual.",
-                links: [
-                    { text: "📖 Explicação completa do Jejum de Daniel", url: "http://rna.to/1kqo5a2" }
-                ]
-            },
-            {
-                id: 39,
-                title: "Planejar o Dia",
-                description: "Planejar o seu dia na noite anterior.",
-                details: "Você vai tirar alguns minutos no final da noite para escrever uma lista das coisas principais que tem de fazer no dia seguinte."
-            },
-            {
-                id: 40,
-                title: "Buscar Ajuda",
-                description: "Buscar ajuda.",
-                details: "Você vai identificar uma área onde precisa de ajuda e procurar quem pode ajudá-lo. Admitir fraqueza é sinal de força.",
-                links: [
-                    { text: "📖 Sobre humildade e pedir ajuda", url: "http://rna.to/1r97JHb" }
-                ]
-            },
-            {
-                id: 41,
-                title: "Oferecer Ajuda",
-                description: "Oferecer ajuda a um homem que precise.",
-                details: "Você vai identificar um homem que esteja precisando de ajuda e oferecê-la da melhor forma que puder."
-            },
-            {
-                id: 42,
-                title: "Proibir Palavras Negativas",
-                description: "Proibir-se de usar certas palavras negativas.",
-                details: "Você vai identificar palavras negativas que costuma usar, proibir-se de usá-las e substituí-las por outras melhores."
-            },
-            {
-                id: 43,
-                title: "Gestos de Generosidade",
-                description: "Praticar pelo menos três gestos de generosidade esta semana.",
-                details: "Você vai fazer pelo menos três gestos de generosidade, sem interesse pessoal, simplesmente para fazer o bem a alguém. Todo IntelliMan é generoso."
-            },
-            {
-                id: 44,
-                title: "Revisão e Leitura",
-                description: "Rever os desafios desde o 27 até o 43 e fazer a leitura da semana.",
-                details: "Chegou outro momento de reflexão. Você vai revisar desde o desafio 27 até o 43 e meditar em Hebreus 11 sobre homens corajosos da história."
-            },
-            {
-                id: 45,
-                title: "Dominar a Raiva",
-                description: "Aprender a dominar a raiva e usá-la a seu favor.",
-                details: "Você vai aprender a dominar sua raiva e identificar a mensagem que ela traz. A raiva é um sinal de que algo contrariou suas expectativas.",
-                links: [
-                    { text: "📖 A origem da raiva", url: "http://rna.to/1hQTrMy" }
-                ]
-            },
-            {
-                id: 46,
-                title: "Pornografia no Cérebro",
-                description: "Assistir ao vídeo 'Pornografia no Cérebro'.",
-                details: "Você vai assistir a um documentário sobre os danos da pornografia e se informar sobre este assunto que afeta muitos homens hoje.",
-                links: [
-                    { text: "🎥 Documentário: Pornografia no Cérebro", url: "http://rna.to/1paseJ1" }
-                ]
-            },
-            {
-                id: 47,
-                title: "Bloquear Pornografia",
-                description: "Bloquear a pornografia da sua vida e blindar-se contra ela.",
-                details: "Você vai tomar medidas práticas para bloquear toda oportunidade de contato com pornografia e blindar-se contra ela.",
-                links: [
-                    { text: "🎥 Por que os homens olham?", url: "http://rna.to/1sYM3AD" },
-                    { text: "🎥 Sobre domínio próprio", url: "http://rna.to/1oRUM65" }
-                ]
-            },
-            {
-                id: 48,
-                title: "Vingar-se Fazendo o Bem",
-                description: "Vingar-se do mal que lhe fez sofrer, fazendo o bem.",
-                details: "Você vai identificar o mal que sofreu e decidir como se vingará desse mal fazendo o bem. Faça o diabo pagar caro!",
-                links: [
-                    { text: "📖 Projetos do autor", url: "http://rna.to/1xNzrPq" }
-                ]
-            },
-            {
-                id: 49,
-                title: "Assumir Erros",
-                description: "Assumir seus erros e pedir desculpas.",
-                details: "Você vai reconhecer seus erros, assumi-los e pedir desculpas a quem deve. Ser homem inteligente é saber que não sabe tudo."
-            },
-            {
-                id: 50,
-                title: "Sair com Parceiro",
-                description: "Sair com seu parceiro oficial para curtirem alguma atividade juntos.",
-                details: "Você vai tirar um tempo para fazer algo que vocês dois gostem. Homens precisam de amigos que sejam influência positiva."
-            },
-            {
-                id: 51,
-                title: "Influências nas Decisões",
-                description: "Entender como suas decisões são influenciadas e ficar mais atento a isso.",
-                details: "Você vai assistir a uma palestra sobre como nossas decisões são influenciadas e aprender a ficar mais atento a essas influências.",
-                links: [
-                    { text: "🎥 Palestra de Dan Ariely sobre decisões", url: "http://rna.to/1pnvm1X" }
-                ]
-            },
-            {
-                id: 52,
-                title: "Encontro com Homens",
-                description: "Organizar um encontro com homens para falar do IntelliMen.",
-                details: "Você vai organizar um encontro para falar sobre como o projeto o tem ajudado e motivar outros homens a participar."
-            },
-            {
-                id: 53,
-                title: "Revisão Final",
-                description: "Certificar-se de ter cumprido todos os 52 desafios. Todos.",
-                details: "Você vai revisar rigorosamente todos os desafios para garantir que cumpriu todos à risca. Missão dada é missão cumprida. Um IntelliMan é um homem inteligente que termina o que começou."
-            }
-        ];
+        // Elementos DOM
+        const authSection = document.getElementById('authSection');
+        const dashboard = document.getElementById('dashboard');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const actualLoginForm = document.getElementById('actualLoginForm');
+        const actualRegisterForm = document.getElementById('actualRegisterForm');
 
-        // Funções de autenticação integradas com backend
+        // Função para mostrar mensagens
+        function showMessage(containerId, message, isError = false) {
+            const container = document.getElementById(containerId);
+            const className = isError ? 'error-message' : 'success-message';
+            container.innerHTML = `<div class="${className}">${message}</div>`;
+            
+            // Remover mensagem após 5 segundos
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        // Alternar entre abas
         function showAuthForm(formType) {
-            document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+            // Remover active das abas
+            loginTab.classList.remove('active');
+            registerTab.classList.remove('active');
             
-            document.querySelector(`[onclick="showAuthForm('${formType}')"]`).classList.add('active');
-            document.getElementById(formType + 'Form').classList.add('active');
-        }
-
-        async function register(event) {
-            event.preventDefault();
+            // Remover active dos forms
+            loginForm.classList.remove('active');
+            registerForm.classList.remove('active');
             
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const partner = document.getElementById('registerPartner').value;
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, password, partner })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    alert('Cadastro realizado com sucesso!');
-                    showAuthForm('login');
-                    // Limpar formulário
-                    document.getElementById('registerForm').reset();
-                } else {
-                    alert(data.error || 'Erro ao cadastrar usuário');
-                }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                alert('Erro de conexão. Tente novamente.');
+            // Ativar aba e form corretos
+            if (formType === 'login') {
+                loginTab.classList.add('active');
+                loginForm.classList.add('active');
+            } else {
+                registerTab.classList.add('active');
+                registerForm.classList.add('active');
             }
+            
+            // Limpar mensagens
+            document.getElementById('loginMessages').innerHTML = '';
+            document.getElementById('registerMessages').innerHTML = '';
         }
 
+        // Event listeners para as abas
+        loginTab.addEventListener('click', () => showAuthForm('login'));
+        registerTab.addEventListener('click', () => showAuthForm('register'));
+
+        // Função de login
         async function login(event) {
             event.preventDefault();
+            console.log('🔑 Tentando fazer login...');
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
+            if (!email || !password) {
+                showMessage('loginMessages', 'Email e senha são obrigatórios', true);
+                return;
+            }
+            
             try {
+                showMessage('loginMessages', '🔄 Fazendo login...');
+                
                 const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: {
@@ -1326,506 +434,106 @@
                 const data = await response.json();
                 
                 if (response.ok) {
+                    console.log('✅ Login realizado com sucesso!');
+                    
                     // Salvar token no localStorage
                     localStorage.setItem('token', data.token);
                     currentUser = data.user;
+                    
+                    // Mostrar dashboard
                     showDashboard();
+                    
+                    showMessage('loginMessages', '✅ Login realizado com sucesso!');
                 } else {
-                    alert(data.error || 'Email ou senha incorretos');
+                    console.error('❌ Erro no login:', data.error);
+                    showMessage('loginMessages', `❌ ${data.error || 'Email ou senha incorretos'}`, true);
                 }
             } catch (error) {
-                console.error('Erro na requisição:', error);
-                alert('Erro de conexão. Tente novamente.');
+                console.error('❌ Erro de conexão:', error);
+                showMessage('loginMessages', '❌ Erro de conexão. Tente novamente.', true);
             }
         }
 
-        function logout() {
-            // Limpar token
-            localStorage.removeItem('token');
-            currentUser = null;
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('dashboard').classList.remove('active');
+        // Função de registro
+        async function register(event) {
+            event.preventDefault();
+            console.log('📝 Tentando registrar usuário...');
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const partner = document.getElementById('registerPartner').value;
+            
+            if (!name || !email || !password) {
+                showMessage('registerMessages', 'Nome, email e senha são obrigatórios', true);
+                return;
+            }
+            
+            try {
+                showMessage('registerMessages', '🔄 Cadastrando usuário...');
+                
+                const response = await fetch(`${API_BASE_URL}/api/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password, partner })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    console.log('✅ Cadastro realizado com sucesso!');
+                    showMessage('registerMessages', '✅ Cadastro realizado com sucesso! Faça login agora.');
+                    
+                    // Limpar formulário
+                    actualRegisterForm.reset();
+                    
+                    // Mudar para aba de login
+                    setTimeout(() => {
+                        showAuthForm('login');
+                    }, 2000);
+                } else {
+                    console.error('❌ Erro no cadastro:', data.error);
+                    showMessage('registerMessages', `❌ ${data.error || 'Erro ao cadastrar usuário'}`, true);
+                }
+            } catch (error) {
+                console.error('❌ Erro de conexão:', error);
+                showMessage('registerMessages', '❌ Erro de conexão. Tente novamente.', true);
+            }
         }
 
+        // Função para mostrar dashboard
         function showDashboard() {
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
+            authSection.style.display = 'none';
+            dashboard.classList.add('active');
             
             // Atualizar informações do usuário
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('partnerName').textContent = currentUser.partner || 'Não definido';
-            
-            loadChallenges();
-            updateProgress();
         }
 
-        // Função para carregar desafios do backend
-        async function loadChallenges() {
-            const grid = document.getElementById('challengesGrid');
-            grid.innerHTML = '<div class="loading">Carregando desafios...</div>';
-            
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_BASE_URL}/api/progress`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const progress = await response.json();
-                    renderChallenges(progress);
-                } else if (response.status === 401) {
-                    // Token inválido, fazer logout
-                    logout();
-                    alert('Sessão expirada. Faça login novamente.');
-                } else {
-                    throw new Error('Erro ao carregar progresso');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar desafios:', error);
-                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: red;">Erro ao carregar desafios. Tente atualizar a página.</div>';
-            }
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('token');
+            currentUser = null;
+            authSection.style.display = 'block';
+            dashboard.classList.remove('active');
+            console.log('🚪 Logout realizado');
         }
 
-        function renderChallenges(progressData) {
-            const grid = document.getElementById('challengesGrid');
-            grid.innerHTML = '';
-            
-            // Converter array de progresso em objeto para facilitar busca
-            const progressMap = {};
-            progressData.forEach(p => {
-                progressMap[p.challenge_id] = p;
-            });
-            
-            challenges.forEach(challenge => {
-                const progress = progressMap[challenge.id];
-                const isCompleted = progress && progress.completed;
-                
-                const card = document.createElement('div');
-                card.className = `challenge-card ${isCompleted ? 'completed' : ''}`;
-                card.onclick = () => openChallengeModal(challenge, progress);
-                
-                let linksHtml = '';
-                if (challenge.links && challenge.links.length > 0) {
-                    linksHtml = `
-                        <div class="challenge-links">
-                            ${challenge.links.map(link => 
-                                `<a href="${link.url}" target="_blank" onclick="event.stopPropagation()">${link.text}</a>`
-                            ).join('')}
-                        </div>
-                    `;
-                }
-                
-                card.innerHTML = `
-                    <div class="challenge-header">
-                        <span class="challenge-number">#${challenge.id}</span>
-                        <span class="challenge-status ${isCompleted ? 'completed' : 'pending'}">
-                            ${isCompleted ? 'Concluído' : 'Pendente'}
-                        </span>
-                    </div>
-                    <div class="challenge-title">${challenge.title}</div>
-                    <div class="challenge-description">${challenge.description}</div>
-                    ${linksHtml}
-                `;
-                
-                grid.appendChild(card);
-            });
-        }
-
-        function openChallengeModal(challenge, progress) {
-            document.getElementById('modalTitle').innerHTML = `
-                <div class="logo-icon">IM</div>
-                Desafio #${challenge.id}: ${challenge.title}
-            `;
-            
-            let linksHtml = '';
-            if (challenge.links && challenge.links.length > 0) {
-                linksHtml = `
-                    <hr style="margin: 20px 0;">
-                    <p><strong>Links úteis:</strong></p>
-                    <div class="challenge-links">
-                        ${challenge.links.map(link => 
-                            `<a href="${link.url}" target="_blank">${link.text}</a>`
-                        ).join('')}
-                    </div>
-                `;
-            }
-            
-            document.getElementById('modalContent').innerHTML = `
-                <p><strong>Descrição:</strong> ${challenge.description}</p>
-                <hr style="margin: 20px 0;">
-                <p><strong>Detalhes:</strong></p>
-                <p>${challenge.details}</p>
-                ${linksHtml}
-            `;
-            
-            // Carregar anotações existentes
-            const notes = progress ? progress.notes || '' : '';
-            document.getElementById('challengeNotes').value = notes;
-            
-            // Configurar botão de conclusão
-            const completeBtn = document.querySelector('.complete-btn');
-            completeBtn.textContent = progress && progress.completed 
-                ? 'Atualizar Anotações' 
-                : 'Salvar e Marcar como Concluído';
-            completeBtn.onclick = () => completeChallenge(challenge.id);
-            
-            document.getElementById('challengeModal').classList.add('active');
-        }
-
-        async function completeChallenge(challengeId) {
-            const notes = document.getElementById('challengeNotes').value;
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/progress/${challengeId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        completed: true,
-                        notes: notes
-                    })
-                });
-                
-                if (response.ok) {
-                    alert('Desafio atualizado com sucesso!');
-                    closeModal();
-                    loadChallenges();
-                    updateProgress();
-                } else if (response.status === 401) {
-                    logout();
-                    alert('Sessão expirada. Faça login novamente.');
-                } else {
-                    const data = await response.json();
-                    alert(data.error || 'Erro ao salvar desafio');
-                }
-            } catch (error) {
-                console.error('Erro ao salvar desafio:', error);
-                alert('Erro de conexão. Tente novamente.');
-            }
-        }
-
-        async function updateProgress() {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_BASE_URL}/api/progress`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const progress = await response.json();
-                    const completed = progress.filter(p => p.completed).length;
-                    const total = challenges.length;
-                    const percentage = (completed / total) * 100;
-                    
-                    document.getElementById('progressFill').style.width = percentage + '%';
-                    document.getElementById('progressText').textContent = `${completed}/${total}`;
-                }
-            } catch (error) {
-                console.error('Erro ao atualizar progresso:', error);
-            }
-        }
-
-        // Função para exportar progresso integrada com backend
-        async function exportProgress() {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_BASE_URL}/api/progress`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Erro ao buscar progresso');
-                }
-                
-                const progressData = await response.json();
-                const completed = progressData.filter(p => p.completed).length;
-                const completionPercentage = ((completed/53)*100).toFixed(1);
-                
-                // Criar conteúdo em Markdown
-                let exportText = `# 📊 RELATÓRIO DE PROGRESSO - INTELLIMEN\n\n`;
-                
-                exportText += `## 👤 Dados do Participante\n\n`;
-                exportText += `- **Nome:** ${currentUser.name}\n`;
-                exportText += `- **Email:** ${currentUser.email}\n`;
-                exportText += `- **Parceiro Oficial:** ${currentUser.partner || 'Não definido'}\n`;
-                exportText += `- **Data do Relatório:** ${new Date().toLocaleDateString('pt-BR')}\n\n`;
-                
-                exportText += `## 📈 Resumo do Progresso\n\n`;
-                exportText += `> **${completed}/53 desafios concluídos (${completionPercentage}%)**\n\n`;
-                
-                // Barra de progresso visual em texto
-                const progressBar = '█'.repeat(Math.floor(completed/53 * 20)) + '░'.repeat(20 - Math.floor(completed/53 * 20));
-                exportText += `\`\`\`\n${progressBar} ${completionPercentage}%\n\`\`\`\n\n`;
-                
-                if (completed > 0) {
-                    exportText += `## ✅ Desafios Concluídos\n\n`;
-                    
-                    challenges.forEach(challenge => {
-                        const progress = progressData.find(p => p.challenge_id === challenge.id && p.completed);
-                        if (progress) {
-                            exportText += `### ${challenge.id}. ${challenge.title}\n\n`;
-                            exportText += `- **Status:** ✅ *Concluído*\n`;
-                            exportText += `- **Data de Conclusão:** ${new Date(progress.completed_at).toLocaleDateString('pt-BR')}\n`;
-                            
-                            if (progress.notes && progress.notes.trim()) {
-                                exportText += `- **Anotações:**\n  > ${progress.notes.replace(/\n/g, '\n  > ')}\n`;
-                            }
-                            exportText += `\n---\n\n`;
-                        }
-                    });
-                }
-                
-                const pendingChallenges = challenges.filter(challenge => 
-                    !progressData.find(p => p.challenge_id === challenge.id && p.completed)
-                );
-                
-                if (pendingChallenges.length > 0) {
-                    exportText += `## ⏳ Desafios Pendentes\n\n`;
-                    exportText += `*${pendingChallenges.length} desafios restantes para completar o projeto:*\n\n`;
-                    
-                    pendingChallenges.forEach(challenge => {
-                        exportText += `- [ ] **Desafio #${challenge.id}:** ${challenge.title}\n`;
-                    });
-                    exportText += `\n`;
-                }
-                
-                exportText += `## 🎯 Lema do IntelliMan\n\n`;
-                exportText += `> *"Um IntelliMan é um homem inteligente. Ele vence a si mesmo, honra sua mulher e ajuda o seu parceiro. Se é difícil, ele supera. Se é assustador, ele enfrenta. Se demora, ele persevera. Conhece o seu valor diante dos homens e de Deus. Ama a disciplina, o caráter e o bem. Sua missão é inspirar outros a se tornarem IntelliMen."*\n\n`;
-                
-                exportText += `---\n\n`;
-                exportText += `*Este relatório foi gerado automaticamente pelo sistema IntelliMen em ${new Date().toLocaleString('pt-BR')}*\n`;
-                
-                // Criar e baixar arquivo
-                const blob = new Blob([exportText], { type: 'text/markdown;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `intellimen_relatorio_${currentUser.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.md`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                alert('📄 Relatório exportado com sucesso!');
-                
-            } catch (error) {
-                console.error('Erro ao exportar progresso:', error);
-                alert('Erro ao exportar relatório. Tente novamente.');
-            }
-        }
-
-        function openProfileModal() {
-            // Carregar dados atuais do usuário
-            document.getElementById('profileName').value = currentUser.name;
-            document.getElementById('profileEmail').value = currentUser.email;
-            document.getElementById('profilePartner').value = currentUser.partner || '';
-            
-            // Carregar estatísticas
-            loadProfileStats();
-            
-            document.getElementById('profileModal').classList.add('active');
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.remove('active');
-        }
-
-        async function updateProfile(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('profileName').value;
-            const partner = document.getElementById('profilePartner').value;
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/user`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ name, partner })
-                });
-                
-                if (response.ok) {
-                    // Atualizar dados locais
-                    currentUser.name = name;
-                    currentUser.partner = partner;
-                    
-                    // Atualizar interface
-                    document.getElementById('userName').textContent = name;
-                    document.getElementById('partnerName').textContent = partner || 'Não definido';
-                    
-                    alert('✅ Perfil atualizado com sucesso!');
-                    closeProfileModal();
-                } else if (response.status === 401) {
-                    logout();
-                    alert('Sessão expirada. Faça login novamente.');
-                } else {
-                    const data = await response.json();
-                    alert(data.error || 'Erro ao atualizar perfil');
-                }
-            } catch (error) {
-                console.error('Erro ao atualizar perfil:', error);
-                alert('Erro de conexão. Tente novamente.');
-            }
-        }
-
-        async function loadProfileStats() {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_BASE_URL}/api/progress`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const progress = await response.json();
-                    const completed = progress.filter(p => p.completed).length;
-                    const total = challenges.length;
-                    const percentage = ((completed / total) * 100).toFixed(1);
-                    
-                    // Calcular data de início (primeira atividade)
-                    const firstActivity = progress.find(p => p.completed);
-                    const startDate = firstActivity ? new Date(firstActivity.completed_at).toLocaleDateString('pt-BR') : 'Ainda não iniciado';
-                    
-                    // Calcular desafios por semana (últimas 4 semanas)
-                    const fourWeeksAgo = new Date();
-                    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
-                    const recentChallenges = progress.filter(p => 
-                        p.completed && new Date(p.completed_at) >= fourWeeksAgo
-                    ).length;
-                    
-                    document.getElementById('profileStats').innerHTML = `
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${completed}</div>
-                                <div style="color: #666;">Desafios Concluídos</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${percentage}%</div>
-                                <div style="color: #666;">Progresso Total</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 2rem; font-weight: bold; color: #000;">${recentChallenges}</div>
-                                <div style="color: #666;">Últimas 4 Semanas</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.2rem; font-weight: bold; color: #000;">${startDate}</div>
-                                <div style="color: #666;">Data de Início</div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
-                            <h4 style="margin-bottom: 10px;">🏆 Nível IntelliMan</h4>
-                            ${getIntelliManLevel(completed)}
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Erro ao carregar estatísticas:', error);
-                document.getElementById('profileStats').innerHTML = '<p style="color: red;">Erro ao carregar estatísticas</p>';
-            }
-        }
-
-        function getIntelliManLevel(completed) {
-            if (completed >= 50) {
-                return '<div style="color: #d4af37; font-weight: bold;">🌟 INTELLIMAN TOP 5 - Liga dos Melhores!</div>';
-            } else if (completed >= 30) {
-                return '<div style="color: #cd7f32; font-weight: bold;">🔥 INTELLIMAN FERA - Você é fera!</div>';
-            } else if (completed >= 15) {
-                return '<div style="color: #c0c0c0; font-weight: bold;">💪 INTELLIMAN ESFORÇADO - Valeu o esforço!</div>';
-            } else if (completed >= 5) {
-                return '<div style="color: #8b4513; font-weight: bold;">🎯 INTELLIMAN BÁSICO - Pelo menos você tentou!</div>';
-            } else {
-                return '<div style="color: #666;">📚 INICIANTE - Continue se esforçando!</div>';
-            }
-        }
-
-        function changePassword() {
-            const newPassword = prompt('Digite sua nova senha:');
-            if (newPassword && newPassword.length >= 6) {
-                // Aqui você implementaria a mudança de senha via API
-                alert('⚠️ Funcionalidade em desenvolvimento. Por enquanto, entre em contato com o suporte.');
-            } else if (newPassword) {
-                alert('A senha deve ter pelo menos 6 caracteres.');
-            }
-        }
-
-        async function resetProgress() {
-            const confirm1 = confirm('⚠️ ATENÇÃO: Esta ação irá DELETAR TODO seu progresso no IntelliMen!\n\nTodos os desafios concluídos e anotações serão perdidos permanentemente.\n\nTem certeza que deseja continuar?');
-            
-            if (confirm1) {
-                const confirm2 = confirm('🚨 ÚLTIMA CHANCE!\n\nEsta é sua última oportunidade de desistir.\n\nSe continuar, TODO seu progresso será PERDIDO PARA SEMPRE.\n\nConfirma a exclusão de todos os dados?');
-                
-                if (confirm2) {
-                    const finalConfirm = prompt('Para confirmar, digite "DELETAR TUDO" (sem aspas):');
-                    
-                    if (finalConfirm === 'DELETAR TUDO') {
-                        try {
-                            const token = localStorage.getItem('token');
-                            // Aqui você implementaria a exclusão via API
-                            // Por enquanto, vamos simular
-                            alert('🗑️ Todo o progresso foi resetado!\n\nVocê pode começar os desafios novamente.');
-                            closeProfileModal();
-                            loadChallenges();
-                            updateProgress();
-                        } catch (error) {
-                            alert('Erro ao resetar progresso. Tente novamente.');
-                        }
-                    } else {
-                        alert('Cancelado. Seu progresso está seguro! 😅');
-                    }
-                }
-            }
-        }
-
-        function openManifestoModal() {
-            document.getElementById('manifestoModal').classList.add('active');
-        }
-
-        function closeManifestoModal() {
-            document.getElementById('manifestoModal').classList.remove('active');
-        }
-
-        function closeModal() {
-            document.getElementById('challengeModal').classList.remove('active');
-        }
-
-        // Fechar modal ao clicar fora
-        window.onclick = function(event) {
-            const challengeModal = document.getElementById('challengeModal');
-            const manifestoModal = document.getElementById('manifestoModal');
-            const profileModal = document.getElementById('profileModal');
-            
-            if (event.target === challengeModal) {
-                closeModal();
-            }
-            if (event.target === manifestoModal) {
-                closeManifestoModal();
-            }
-            if (event.target === profileModal) {
-                closeProfileModal();
-            }
-        }
+        // Event listeners para os formulários
+        actualLoginForm.addEventListener('submit', login);
+        actualRegisterForm.addEventListener('submit', register);
 
         // Verificar se usuário está logado ao carregar a página
-        window.onload = async function() {
+        window.addEventListener('load', async function() {
+            console.log('📱 Verificando autenticação...');
+            
             const token = localStorage.getItem('token');
             
             if (token) {
                 try {
-                    // Verificar se o token é válido obtendo dados do usuário
                     const response = await fetch(`${API_BASE_URL}/api/user`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -1836,16 +544,19 @@
                         const userData = await response.json();
                         currentUser = userData;
                         showDashboard();
+                        console.log('✅ Usuário já estava logado');
                     } else {
-                        // Token inválido, remover
                         localStorage.removeItem('token');
+                        console.log('❌ Token inválido removido');
                     }
                 } catch (error) {
-                    console.error('Erro ao verificar autenticação:', error);
+                    console.error('❌ Erro ao verificar autenticação:', error);
                     localStorage.removeItem('token');
                 }
             }
-        }
+        });
+
+        console.log('✅ IntelliMen carregado com sucesso!');
     </script>
 </body>
-</html>>
+</html>
